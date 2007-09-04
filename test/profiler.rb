@@ -1,4 +1,4 @@
-$:.unshift 'lib'
+$:.unshift File.dirname(__FILE__) + '/../lib'
 require 'ambition'
 require 'ruby-prof'
 
