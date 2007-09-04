@@ -1,0 +1,17 @@
+sqlite3:
+  adapter: sqlite3
+  database: db/development.sqlite3
+
+mysql:
+  adapter: mysql
+  database: ambition_development
+  username: root
+  password: 
+  host: localhost
+
+postgres:
+  adapter: postgresql
+  database: ambition_development
+  username: root
+  password: 
+  host: localhost
