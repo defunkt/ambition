@@ -9,7 +9,7 @@ but instead I'm just going to show you some examples.
 The goal is this: write once, run with ActiveRecord, Sequel, DataMapper,
 whatever. Kind of like Rack for databases.
 
-== Git It (Not with Git, though)
+== Git It (with Git, even)
 
   $ sudo gem install ambition -y
 
@@ -23,6 +23,10 @@ To use with Rails, after installing the gem:
   $ gem unpack ambition
 
 RDoc exists: http://rock.errtheblog.com/ambition
+
+Have at the Git repo: 
+
+  $ git clone git://errtheblog.com/git/ambition
 
 == Examples
 
@@ -199,7 +203,8 @@ possible.
 
 == SELECT * FROM bugs 
 
-Found a bug?  Sweet.  Add it at the Lighthouse: http://err.lighthouseapp.com/projects/466-plugins/tickets/new
+Found a bug?  Sweet.  Add it at the Lighthouse: 
+  http://err.lighthouseapp.com/projects/466-plugins/tickets/new
 
 Feature requests are welcome. 
 
