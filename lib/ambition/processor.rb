@@ -1,4 +1,5 @@
 require 'active_record/connection_adapters/abstract/quoting'
+require 'ambition/proc_to_ruby'
 
 module Ambition
   class Processor 
@@ -29,7 +30,6 @@ module Ambition
 
     def process_array(exp)
       arrayed = exp.map { |m| process(m) }
-      exp.clear
       return arrayed.join(', ')
     end
 
@@ -52,18 +52,26 @@ module Ambition
       when Regexp
         "'#{value.source}'"
       else 
-        ActiveRecord::Base.connection.quote(value) 
+        if active_connection?
+          ActiveRecord::Base.connection.quote(value) 
+        else
+          quote(value)
+        end
       end
-    rescue ActiveRecord::ConnectionNotEstablished
-      quote(value)
     rescue
       "'#{value}'"
     end
     
     def quote_column_name(value)
-      ActiveRecord::Base.connection.quote_column_name(value) 
-    rescue ActiveRecord::ConnectionNotEstablished
-      value.to_s
+      if active_connection?
+        ActiveRecord::Base.connection.quote_column_name(value) 
+      else
+        value.to_s
+      end
+    end
+
+    def active_connection?
+      ActiveRecord::Base.active_connection_name
     end
 
     def statement(*args)

@@ -1,15 +1,5 @@
 module Ambition
-  module Where
-    def select(*args, &block)
-      query_context.add WhereProcessor.new(self, block)
-    end
-
-    def detect(&block)
-      select(&block).first
-    end
-  end
-
-  class WhereProcessor < Processor 
+  class SelectProcessor < Processor 
     def initialize(owner, block)
       super()
       @receiver    = nil
@@ -31,7 +21,6 @@ module Ambition
 
     def process_not(exp)
       type, receiver, method, other = *exp.first
-      exp.clear
 
       case type
       when :call
@@ -39,14 +28,15 @@ module Ambition
       when :match3
         regexp = receiver.last
         "#{process(method)} #{statement(:negated_regexp, regexp)} #{sanitize(regexp)}"
+      else
+        process_error(exp)
       end
     end
 
     def process_call(exp)
       receiver, method, other = *exp
-      exp.clear
 
-      return translation(receiver, method, other)
+      translation(receiver, method, other)
     end
 
     def process_lit(exp)
@@ -77,9 +67,9 @@ module Ambition
     def process_dvar(exp)
       target = exp.shift
       if target == @receiver
-        return @table_name
+        @table_name
       else
-        return value(target.to_s[0..-1])
+        value(target.to_s[0..-1])
       end
     end
 
@@ -100,7 +90,6 @@ module Ambition
     end
 
     def process_attrasgn(exp)
-      exp.clear
       raise "Assignment not supported.  Maybe you meant ==?"
     end
 
@@ -111,7 +100,7 @@ module Ambition
       while clause = exp.shift
         clauses << clause
       end
-      return "(" + clauses.map { |c| process(c) }.join(" #{with} ") + ")"
+      "(" + clauses.map { |c| process(c) }.join(" #{with} ") + ")"
     end
 
     def value(variable)

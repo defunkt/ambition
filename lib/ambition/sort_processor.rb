@@ -1,11 +1,5 @@
 module Ambition
-  module Order
-    def sort_by(&block)
-      query_context.add OrderProcessor.new(self, block)
-    end
-  end
-
-  class OrderProcessor < Processor 
+  class SortProcessor < Processor 
     def initialize(owner, block)
       super()
       @receiver    = nil

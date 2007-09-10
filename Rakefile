@@ -2,7 +2,7 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
-Version = '0.2.0'
+Version = '0.2.1'
 
 module Rake::TaskManager
   def redefine_task(task_class, args, &block)
