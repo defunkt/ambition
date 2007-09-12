@@ -3,6 +3,7 @@ unless defined? ActiveRecord
   require 'active_record' 
 end
 require 'ambition/api'
+require 'ambition/source'
 require 'ambition/processor'
 require 'ambition/select_processor'
 require 'ambition/sort_processor'
