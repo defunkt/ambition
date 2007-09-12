@@ -7,6 +7,7 @@
 ./lib/ambition/select_processor.rb
 ./lib/ambition/simple_processor.rb
 ./lib/ambition/sort_processor.rb
+./lib/ambition/source.rb
 ./lib/ambition.rb
 ./LICENSE
 ./Manifest
@@ -38,8 +39,8 @@
 ./test/helper.rb
 ./test/join_test.rb
 ./test/limit_test.rb
-./test/mocks_test.rb
 ./test/order_test.rb
 ./test/profiler.rb
+./test/source_test.rb
 ./test/types_test.rb
 ./test/where_test.rb
