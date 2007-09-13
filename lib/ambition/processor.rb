@@ -14,23 +14,20 @@ module Ambition
 
     ##
     # Processing methods
-    def process_error(exp)
-      raise "Missing process method for sexp: #{exp.inspect}"
-    end
-
     def process_proc(exp)
       receiver, body = process(exp.shift), exp.shift
-      return process(body)
+      process(body)
     end
 
     def process_dasgn_curr(exp)
-      @receiver = exp.shift
-      return @receiver.to_s
+      @receiver = exp.first
+      @receiver.to_s
     end
+    alias_method :process_dasgn, :process_dasgn_curr
 
     def process_array(exp)
       arrayed = exp.map { |m| process(m) }
-      return arrayed.join(', ')
+      arrayed.join(', ')
     end
 
     ##
@@ -98,10 +95,13 @@ module Ambition
 
     def process(node)
       node ||= []
+
       if respond_to?(method = "process_#{node.first}") 
         send(method, node[1..-1]) 
+      elsif node.blank?
+        ''
       else
-        process_error(node)
+        raise "Missing process method for sexp: #{node.inspect}"
       end
     end
   end

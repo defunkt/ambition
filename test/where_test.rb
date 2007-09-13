@@ -136,6 +136,11 @@ context "Where (using select)" do
   specify "undefined equality symbol" do
     should.raise { User.select { |m| m.name =* /chris/ }.to_sql }
   end
+
+  specify "block variable / assigning variable conflict" do
+    m = User.select { |m| m.name == 'chris' }.to_sql
+    m.should == "SELECT * FROM users WHERE users.name = 'chris'"
+  end
   
   xspecify "simple == with inline ruby" do
     # TODO: implement this
