@@ -98,7 +98,11 @@ module Ambition
 
     def process(node)
       node ||= []
-      respond_to?(method = "process_#{node.shift}") ? send(method, node) : ''
+      if respond_to?(method = "process_#{node.first}") 
+        send(method, node[1..-1]) 
+      else
+        process_error(node)
+      end
     end
   end
 end
