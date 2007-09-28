@@ -52,9 +52,8 @@ context "Different types" do
     sql.should == "SELECT * FROM users WHERE users.name IS NOT NULL"
   end
 
-  xspecify "Time" do
-    # TODO: nothing but variables inside blocks for now
+  specify "Time" do
     sql = User.select { |m| m.name == Time.now }.to_sql
-    sql.should == "SELECT * FROM users WHERE users.name = NULL"
+    sql.should == "SELECT * FROM users WHERE users.name = '#{Time.now.to_s(:db)}'"
   end
 end
