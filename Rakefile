@@ -30,6 +30,7 @@ begin
     p.author = 'Chris Wanstrath'
     p.email = "chris@ozmm.org"
     p.extra_deps << ['ParseTree',    '=2.0.1']
+    p.extra_deps << ['ruby2ruby',    '=1.1.7']
     p.extra_deps << ['activerecord', '>=1.15.0']
     p.test_globs = 'test/*_test.rb'
   end
