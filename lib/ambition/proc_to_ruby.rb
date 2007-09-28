@@ -1,6 +1,7 @@
 ##
 # Taken from ruby2ruby, Copyright (c) 2006 Ryan Davis under the MIT License
 require 'parse_tree'
+require 'ruby2ruby'
 
 class ProcHolder
 end
