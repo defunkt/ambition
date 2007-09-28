@@ -30,6 +30,12 @@ Benchmark.bm(30) do |x|
     end
   end
 
+  x.report 'simple select w/ eval' do
+    Times.times do
+      User.select { |u| u.created_at == Time.now }.to_hash
+    end
+  end
+
   x.report 'dual select' do
     Times.times do
       User.select { |u| u.id == 20 && u.age > 20 }.to_hash
