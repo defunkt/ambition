@@ -26,6 +26,7 @@ module Ambition
     alias_method :process_dasgn, :process_dasgn_curr
 
     def process_array(exp)
+      # Branch on whether this is straight Ruby or a real array
       if ruby = rubify(exp)
         value ruby
       else
@@ -36,28 +37,7 @@ module Ambition
 
     def rubify(exp)
       if exp.first.first == :call && exp.first[1].last != @receiver && Array(exp.first[1][1]).last != @receiver
-        Ruby.process(exp.first)
-      end
-    end
-
-    class Ruby < RubyToRuby
-      def self.process(node)
-        @processor ||= new
-        @processor.process node
-      end
-
-      ##
-      # This is not DRY, and I don't care.
-      def process(node)
-        node ||= []
-
-        if respond_to?(method = "process_#{node.first}") 
-          send(method, node[1..-1]) 
-        elsif node.blank?
-          ''
-        else
-          raise "Missing process method for sexp: #{node.inspect}"
-        end
+        RubyProcessor.process(exp.first)
       end
     end
 

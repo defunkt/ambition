@@ -5,6 +5,7 @@ end
 require 'ambition/api'
 require 'ambition/source'
 require 'ambition/processor'
+require 'ambition/ruby_processor'
 require 'ambition/select_processor'
 require 'ambition/sort_processor'
 require 'ambition/simple_processor'
