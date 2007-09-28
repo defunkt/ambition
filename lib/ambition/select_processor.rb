@@ -103,10 +103,6 @@ module Ambition
       "(" + clauses.map { |c| process(c) }.join(" #{with} ") + ")"
     end
 
-    def value(variable)
-      sanitize eval(variable, @block)
-    end
-
     def negate(method, target = nil)
       if Array(target).last == [:nil]
         return 'IS NOT'

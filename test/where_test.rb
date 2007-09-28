@@ -74,7 +74,7 @@ context "Where (using select)" do
     sql.should == "SELECT * FROM users WHERE users.name = '#{@me}'"
   end
 
-  xspecify "simple == with instance variable method call" do
+  specify "simple == with instance variable method call" do
     require 'ostruct'
     @person = OpenStruct.new(:name => 'chris')
 
@@ -142,10 +142,9 @@ context "Where (using select)" do
     m.should == "SELECT * FROM users WHERE users.name = 'chris'"
   end
   
-  xspecify "simple == with inline ruby" do
-    # TODO: implement this
+  specify "simple == with inline ruby" do
     sql = User.select { |m| m.created_at == 2.days.ago.to_s(:db) }.to_sql
-    sql.should == "SELECT * FROM users WHERE users.created_at = #{2.days.ago.to_s(:db)}"
+    sql.should == "SELECT * FROM users WHERE users.created_at = '#{2.days.ago.to_s(:db)}'"
   end
 
   specify "inspect" do

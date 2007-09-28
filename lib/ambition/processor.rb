@@ -26,14 +26,24 @@ module Ambition
     alias_method :process_dasgn, :process_dasgn_curr
 
     def process_array(exp)
-      arrayed = exp.map { |m| process(m) }
-      arrayed.join(', ')
+      if exp.first.first == :call
+        require 'ruby2ruby'
+        exp.unshift :array
+        value RubyToRuby.new.process(exp)
+      else
+        arrayed = exp.map { |m| process(m) }
+        arrayed.join(', ')
+      end
     end
 
     ##
     # Helper methods
     def to_s
       process(@block.to_sexp).squeeze(' ')
+    end
+
+    def value(variable)
+      sanitize eval(variable, @block)
     end
 
     def sanitize(value)
