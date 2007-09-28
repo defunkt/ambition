@@ -26,13 +26,18 @@ module Ambition
     alias_method :process_dasgn, :process_dasgn_curr
 
     def process_array(exp)
-      if exp.first.first == :call
-        require 'ruby2ruby'
-        exp.unshift :array
-        value RubyToRuby.new.process(exp)
+      if ruby = rubify(exp)
+        value ruby
       else
         arrayed = exp.map { |m| process(m) }
         arrayed.join(', ')
+      end
+    end
+
+    def rubify(exp)
+      if exp.first.first == :call && exp.first[1].last != @receiver && Array(exp.first[1][1]).last != @receiver
+        require 'ruby2ruby'
+        RubyToRuby.new.process(exp.first)
       end
     end
 
