@@ -4,6 +4,7 @@
 ./lib/ambition/proc_to_ruby.rb
 ./lib/ambition/processor.rb
 ./lib/ambition/query.rb
+./lib/ambition/ruby_processor.rb
 ./lib/ambition/select_processor.rb
 ./lib/ambition/simple_processor.rb
 ./lib/ambition/sort_processor.rb
