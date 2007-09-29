@@ -2,19 +2,18 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
-Version = '0.3.0'
+Version = '0.3.1'
 
 module Rake::TaskManager
-  def redefine_task(task_class, args, &block)
+  def delete_task(task_class, args, &block)
     task_name, deps = resolve_args(args)
     @tasks.delete(task_class.scope_name(@scope, task_name).to_s)
-    define_task(task_class, args, &block)
   end
 end
 class Rake::Task
-  def self.redefine_task(args, &block) Rake.application.redefine_task(self, args, &block) end
+  def self.delete_task(args, &block) Rake.application.delete_task(self, args, &block) end
 end
-def redefine_task(args, &block) Rake::Task.redefine_task(args, &block) end
+def delete_task(args, &block) Rake::Task.delete_task(args, &block) end
 
 begin
   require 'rubygems'
@@ -38,7 +37,7 @@ begin
 rescue LoadError 
 end
 
-redefine_task(:test) { }
+delete_task :test
 
 Rake::TestTask.new('test') do |t|
   t.pattern = 'test/*_test.rb'
