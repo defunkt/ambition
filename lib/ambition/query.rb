@@ -63,7 +63,7 @@ module Ambition
       sql << "WHERE #{hash[:conditions].join(' AND ')}" unless hash[:conditions].blank?
       sql << "ORDER BY #{hash[:order].join(', ')}"      unless hash[:order].blank?
       sql << "LIMIT #{hash[:limit]}"                    unless hash[:limit].blank?
-      sql << "OFFSET #{hash[:limit]}"                   unless hash[:offset].blank?
+      sql << "OFFSET #{hash[:offset]}"                  unless hash[:offset].blank?
 
       @@select % [ @table_name, sql.join(' ') ]
     end
