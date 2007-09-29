@@ -59,21 +59,13 @@ See, +to_hash+:
   >> User.select { |m| m.name == 'jon' }.to_hash
   => {:conditions=>"users.name = 'jon'"} 
 
-== Limitations
-
-You can use variables, but any more complex Ruby (right now) won't work
-inside your blocks.  Just do it outside the block and assign it to a variable.
-
-Instead of:
-  User.select { |m| m.date == 2.days.ago }
-
-Just do:
-  date = 2.days.ago
-  User.select { |m| m.date == date }
-
-Instance variables and globals work, too.  Same with method calls.
-
 == Equality -- select { |u| u.field == 'bob' }
+
+  User.select { |m| m.name == 'jon' }
+  "SELECT * FROM users WHERE users.name = 'jon'"
+
+  User.select { |m| m.created_at > 2.days.ago }
+  "SELECT * FROM users WHERE users.created_at > '2007-09-26 20:37:47'"
 
   User.select { |m| m.name == 'jon' }
   "SELECT * FROM users WHERE users.name = 'jon'"
@@ -207,5 +199,9 @@ Found a bug?  Sweet.  Add it at the Lighthouse:
   http://err.lighthouseapp.com/projects/466-plugins/tickets/new
 
 Feature requests are welcome. 
+
+And hey, join our mailing list!
+
+  http://groups.google.com/group/ambition-rb
 
 * Chris Wanstrath [ chris@ozmm.org ]
