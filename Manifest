@@ -43,5 +43,6 @@
 ./test/order_test.rb
 ./test/profiler.rb
 ./test/source_test.rb
+./test/ruby_test.rb
 ./test/types_test.rb
 ./test/where_test.rb
