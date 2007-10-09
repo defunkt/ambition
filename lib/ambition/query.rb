@@ -58,8 +58,9 @@ module Ambition
     def to_s
       hash = keyed_clauses
 
+      raise "Sorry, I can't construct SQL with complex joins (yet)" unless hash[:includes].blank?
+
       sql = []
-      sql << "JOIN #{hash[:includes].join(', ')}"       unless hash[:includes].blank?
       sql << "WHERE #{hash[:conditions].join(' AND ')}" unless hash[:conditions].blank?
       sql << "ORDER BY #{hash[:order].join(', ')}"      unless hash[:order].blank?
       sql << "LIMIT #{hash[:limit]}"                    unless hash[:limit].blank?

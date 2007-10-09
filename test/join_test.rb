@@ -25,6 +25,19 @@ context "Joins" do
     }
   end
 
+  specify "belongs_to" do
+    sql = User.select { |m| m.account.id > 20 }
+    sql.to_hash.should ==  { 
+      :conditions => "accounts.id > 20",
+      :include    => [:account]
+    }
+  end
+
+  specify "complex joins have no to_s" do
+    sql = User.select { |m| m.account.id > 20 }
+    should.raise { sql.to_s }
+  end
+
   specify "non-existant associations" do
     sql = User.select { |m| m.liquor.brand == 'Jack' }
     should.raise { sql.to_hash } 
