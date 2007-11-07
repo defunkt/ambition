@@ -1,14 +1,14 @@
 require File.dirname(__FILE__) + '/../../helper'
 
-module LDAP
+module ActiveLdap
   class Base
   end
 end
 
 
-class LDAPUser < LDAP::Base
+class LDAPUser < ActiveLdap::Base
   def self.table_name
-    # in real life would call the base class method on the ActiveLDAP model class
+    # in real life would call the base class method on the ActiveLdap model class
     'ou=people,dc=automatthew,dc=com'
   end
 end
