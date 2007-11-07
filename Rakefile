@@ -39,14 +39,8 @@ end
 
 delete_task :test
 
-#Rake::TestTask.new('test') do |t|
-#  t.pattern = 'test/*_test.rb'
-#end
-
-task :test do
-  FileList['test/adapters/**/*test.rb'].each do |file|
-    ruby "#{file}"
-  end
+Rake::TestTask.new('test') do |t|
+  t.pattern = 'test/*_test.rb'
 end
 
 Rake::TestTask.new('test:adapters') do |t|

@@ -214,7 +214,7 @@ context "ActiveRecord Adapter :: Select" do
     end
 
     teardown do
-      ActiveRecord::Base.remove_connection
+      ActiveRecord::Base.connection = ActiveRecord::ConnectionAdapters::FakeAdapter.new('connection', 'logger')
     end
 
     specify "quoting of column name" do
@@ -242,10 +242,6 @@ context "ActiveRecord Adapter :: Select" do
   context "Adapter without overrides" do
     setup do
       ActiveRecord::Base.connection = ActiveRecord::ConnectionAdapters::FakeAdapter.new('connection', 'logger')
-    end
-
-    teardown do
-      ActiveRecord::Base.remove_connection
     end
 
     specify "quoting of column name" do
