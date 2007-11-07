@@ -17,6 +17,8 @@ module Ambition
         end
 
         def to_s
+          Array(@clauses[:select]).map { |clause| clause.to_s }.join
+          @clauses[:select].first.to_s
         end
       end
     end

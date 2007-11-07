@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/helper'
 
 context "Filter (using select)" do
-  
   specify "simple ==" do
     filter = LDAPUser.select { |m| m.name == 'jon' }.to_s
     filter.should == "(name=jon)"
@@ -46,7 +45,6 @@ context "Filter (using select)" do
     filter = LDAPUser.select { |m| m.age <= 21 }.to_s
     filter.should == "(age<=21)"
   end
-  
   
   specify "array.include? item" do
     filter = LDAPUser.select { |m| [1, 2, 3, 4].include? m.id }.to_s
