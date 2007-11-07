@@ -7,14 +7,14 @@ context "Chaining" do
     sql.to_s.should == "SELECT * FROM users WHERE users.name = 'jon' AND users.age = 22"
   end
 
-  xspecify "should join sort_bys with a comma" do
+  specify "should join sort_bys with a comma" do
     sql = User.select { |m| m.name == 'jon' }
     sql = sql.sort_by { |m| m.name }
     sql = sql.sort_by { |m| m.age }
     sql.to_s.should == "SELECT * FROM users WHERE users.name = 'jon' ORDER BY users.name, users.age"
   end
 
-  xspecify "should join selects and sorts intelligently" do
+  specify "should join selects and sorts intelligently" do
     sql = User.select { |m| m.name == 'jon' }
     sql = sql.select { |m| m.age == 22 }
     sql = sql.sort_by { |m| -m.name }
@@ -22,7 +22,7 @@ context "Chaining" do
     sql.to_s.should == "SELECT * FROM users WHERE users.name = 'jon' AND users.age = 22 ORDER BY users.name DESC, users.age"
   end
 
-  xspecify "should join lots of selects and sorts intelligently" do
+  specify "should join lots of selects and sorts intelligently" do
     sql = User.select { |m| m.name == 'jon' }
     sql = sql.select { |m| m.age == 22 }
     sql = sql.sort_by { |m| m.name }
