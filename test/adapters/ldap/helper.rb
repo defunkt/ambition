@@ -2,10 +2,36 @@ require File.dirname(__FILE__) + '/../../helper'
 
 module ActiveLdap
   class Base
-    def find(*args)
-      "dummy find method"
+  end
+end
+
+
+module ActiveLdap
+  module Operations
+    class << self
+      def included(base)
+        super
+        base.class_eval do
+          # ...
+          extend(Find)
+          # ...
+          include(Find)
+         # ...
+        end
+      end
+    end
+    module Find
+      def find(*args)
+        "dummy find method"
+      end
     end
   end
+end
+
+ActiveLdap::Base.class_eval do
+# ...
+  include ActiveLdap::Operations
+# ...
 end
 
 
