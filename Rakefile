@@ -47,6 +47,13 @@ Rake::TestTask.new('test:adapters') do |t|
   t.pattern = 'test/adapters/**/*_test.rb'
 end
 
+Dir['test/adapters/*'].each do |adapter|
+  adapter = adapter.split('/').last
+  Rake::TestTask.new("test:adapters:#{adapter}") do |t|
+    t.pattern = "test/adapters/#{adapter}/*_test.rb"
+  end
+end
+
 desc 'Default: run unit tests.'
 task :default => :test
 
