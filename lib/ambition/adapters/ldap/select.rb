@@ -2,8 +2,12 @@ module Ambition
   module Adapters
     module LDAP
       class Select < Base
-        def call(*methods)
-          methods.first
+        def call(method, *args)
+          if method.to_s[-1] == ??
+            "(#{method.to_s[0...-1]}=#{sanitize true})"
+          else
+            method
+          end
         end
 
         def both(left, right)
