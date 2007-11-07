@@ -2,6 +2,9 @@ require File.dirname(__FILE__) + '/../../helper'
 
 module ActiveLdap
   class Base
+    def find(*args)
+      "dummy find method"
+    end
   end
 end
 
