@@ -2,12 +2,17 @@ module Ambition
   module Adapters
     module LDAP
       class Select < Base
-        def call(method, *args)
-          if method.to_s[-1] == ??
-            "(#{method.to_s[0...-1]}=#{sanitize true})"
+        def call(*methods)
+          method = methods.first.to_s
+          if method[-1] == ??
+            "(#{method[0...-1]}=#{sanitize true})"
           else
             method
           end
+        end
+
+        def chained_call(*methods)
+          call(*methods)
         end
 
         def both(left, right)

@@ -5,6 +5,7 @@ module Ambition
     def initialize(owner)
       @owner   = owner
       @clauses = {}
+      @hash    = {}
     end
 
     def ambition_context
@@ -15,6 +16,14 @@ module Ambition
       @clauses[clause.key] ||= []
       @clauses[clause.key] << clause
       self
+    end
+
+    def [](key)
+      @hash[key]
+    end
+
+    def []=(key, value)
+      @hash[key] = value
     end
 
     def adapter_query
@@ -38,13 +47,8 @@ module Ambition
     end
     alias_method :length, :size
 
-    alias_method :actual_inspect, :inspect
     def inspect(debug = false)
-      if debug
-        actual_inspect
-      else
-        "(Query object: call #to_s or #to_hash to inspect, call an Enumerable (such as #each or #first) to request data)"
-      end
+      "(Query object: call #to_s or #to_hash to inspect, call an Enumerable (such as #each or #first) to request data)"
     end
   end
 end

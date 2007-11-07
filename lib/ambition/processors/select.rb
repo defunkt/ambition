@@ -36,7 +36,7 @@ module Ambition
         #   [[:call, [:dvar, :m], :name], :upcase]
         elsif args.first.first == :call && args.first[1].last == @receiver
           receiver, method = args
-          @selector.send(method, receiver.last)
+          @selector.chained_call(receiver.last, method)
 
         else
           raise args.inspect
