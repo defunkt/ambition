@@ -1,5 +1,9 @@
 module Ambition
   module API
+    include Enumerable
+
+    ##
+    # Entry methods
     def select(&block)
       ambition_context << Processors::Select.new(ambition_owner, block)
     end
@@ -9,13 +13,12 @@ module Ambition
     end
 
     def entries
-      kick
+      ambition_context.kick
     end
     alias_method :to_a, :entries
 
-    def first(count = 1)
-      sliced = slice(0, count)
-      count == 1 ? sliced.kick : sliced
+    def size
+      ambition_context.size
     end
 
     def slice(start, length = nil)
@@ -30,14 +33,35 @@ module Ambition
     end
     alias_method :[], :slice
 
-    def ambition_owner
-      @owner || self
-    end
-
+    ##
+    # Convenience methods
     def detect(&block)
       select(&block).first
     end
 
+    def first(count = 1)
+      sliced = slice(0, count)
+      count == 1 ? sliced.kick : sliced
+    end
+
+    def each(&block)
+      entries.each(&block)
+    end
+
+    def any?(&block)
+      select(&block).size > 0
+    end
+
+    def all?(&block)
+      size == select(&block).size
+    end
+
+    def empty?
+      size.zero?
+    end
+
+    ##
+    # Plumbing
     def ambition_context
       Context.new(self)
     end
@@ -48,6 +72,10 @@ module Ambition
 
     def ambition_adapter=(klass)
       @@ambition_adapter = klass
+    end
+
+    def ambition_owner
+      @owner || self
     end
   end
 end
