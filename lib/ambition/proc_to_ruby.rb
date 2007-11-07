@@ -9,6 +9,10 @@ class Object
       return proc { #{inspect} }.to_sexp.last
     end_eval
   end
+
+  def metaclass
+    (class << self; self end)
+  end
 end
 
 class ProcHolder

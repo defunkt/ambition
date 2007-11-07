@@ -4,18 +4,7 @@ module Ambition
       def initialize(owner, block)
         @owner    = owner
         @block    = block
-        @selector = @owner.ambition_adapter::Select.new
-        @selector.class.send(:attr_accessor, :owner)
-        @selector.owner = @owner
-      end
-
-      @@negated_call_map = Hash.new { |h,k| raise "Missing negated call: #{k} " }
-      @@negated_call_map.update \
-        :== => :not_equal,
-        :=~ => :not_regexp
-
-      def process_operator(operator)
-        @negated ? @@negated_call_map[operator] : operator
+        @selector = new_api_instance(@owner)
       end
 
       def process_call(args)
@@ -79,6 +68,18 @@ module Ambition
 
       def process_not(args)
         negate { process(args.first) }
+      end
+
+      def process_operator(operator)
+        @negated ? negate_operator(operator) : operator
+      end
+
+      def negate_operator(operator)
+        case operator
+        when :== then :not_equal
+        when :=~ then :not_regexp
+        else raise "Missing negated operator definition: #{operator}"
+        end
       end
 
       def negate

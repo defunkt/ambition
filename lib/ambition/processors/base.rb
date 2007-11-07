@@ -64,11 +64,18 @@ module Ambition
       def process_gvar(exp)
         value(exp.shift.to_s)
       end
+      
+      def process(node)
+        node ||= []
 
-      def rubify(exp)
-        # TODO: encapsulate this check in Ruby.should_process?(exp)
-        if exp.first.first == :call && exp.first[1].last != @receiver && Array(exp.first[1][1]).last != @receiver
-          value Ruby.process(exp.first)
+        if node.is_a? Symbol
+          node
+        elsif respond_to?(method = "process_#{node.first}") 
+          send(method, node[1..-1]) 
+        elsif node.blank?
+          ''
+        else
+          raise "Missing process method for sexp: #{node.inspect}"
         end
       end
 
@@ -85,18 +92,19 @@ module Ambition
       def value(variable)
         eval variable, @block
       end
-      
-      def process(node)
-        node ||= []
 
-        if node.is_a? Symbol
-          node
-        elsif respond_to?(method = "process_#{node.first}") 
-          send(method, node[1..-1]) 
-        elsif node.blank?
-          ''
-        else
-          raise "Missing process method for sexp: #{node.inspect}"
+      def new_api_instance(owner)
+        klass    = owner.ambition_adapter.const_get(self.class.name.split('::').last)
+        instance = klass.new
+        instance.metaclass.send(:attr_accessor, :owner)
+        instance.owner = owner
+        instance
+      end
+
+      def rubify(exp)
+        # TODO: encapsulate this check in Ruby.should_process?(exp)
+        if exp.first.first == :call && exp.first[1].last != @receiver && Array(exp.first[1][1]).last != @receiver
+          value Ruby.process(exp.first)
         end
       end
     end

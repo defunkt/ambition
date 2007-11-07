@@ -5,9 +5,7 @@ module Ambition
         @owner  = owner
         @start  = start
         @length = length
-        @slicer = @owner.ambition_adapter::Slice.new
-        @slicer.class.send(:attr_accessor, :owner)
-        @slicer.owner = @owner
+        @slicer = new_api_instance(@owner)
       end
 
       def to_s

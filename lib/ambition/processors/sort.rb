@@ -4,9 +4,7 @@ module Ambition
       def initialize(owner, block)
         @owner  = owner
         @block  = block
-        @sorter = @owner.ambition_adapter::Sort.new
-        @sorter.class.send(:attr_accessor, :owner)
-        @sorter.owner = @owner
+        @sorter = new_api_instance(@owner)
       end
 
       def process_call(args)
