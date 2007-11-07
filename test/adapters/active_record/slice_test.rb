@@ -1,13 +1,13 @@
 require File.dirname(__FILE__) + '/helper'
 
-context "Limit" do
+context "Slice" do
   setup do
     @sql = User.select { |m| m.name == 'jon' }
   end
 
   specify "first" do
     conditions = { :conditions => "users.name = 'jon'", :limit => 1 }
-    User.expects(:find).with(:first, conditions)
+    User.expects(:find).with(:all, conditions)
     @sql.first
   end
 

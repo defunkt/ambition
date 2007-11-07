@@ -8,6 +8,28 @@ module Ambition
       ambition_context << Processors::Sort.new(ambition_owner, block)
     end
 
+    def entries
+      kick
+    end
+    alias_method :to_a, :entries
+
+    def first(count = 1)
+      sliced = slice(0, count)
+      count == 1 ? sliced.kick : sliced
+    end
+
+    def slice(start, length = nil)
+      if start.is_a? Range
+        length  = start.end
+        length -= 1 if start.exclude_end?
+        start = start.first
+        length -= start
+      end
+
+      ambition_context << Processors::Slice.new(ambition_owner, start, length)
+    end
+    alias_method :[], :slice
+
     def ambition_owner
       @owner || self
     end

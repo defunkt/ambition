@@ -38,8 +38,13 @@ module Ambition
     end
     alias_method :length, :size
 
-    def inspect
-      "(Query object: call #to_s or #to_hash to inspect, call an Enumerable (such as #each or #first) to request data)"
+    alias_method :actual_inspect, :inspect
+    def inspect(debug = false)
+      if debug
+        actual_inspect
+      else
+        "(Query object: call #to_s or #to_hash to inspect, call an Enumerable (such as #each or #first) to request data)"
+      end
     end
   end
 end

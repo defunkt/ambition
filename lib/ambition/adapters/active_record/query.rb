@@ -5,7 +5,7 @@ module Ambition
         @@select = 'SELECT * FROM %s %s'
 
         def initialize(owner, clauses)
-          @owner   = owner
+          @owner = owner
           @precached_clauses = clauses
         end
 
@@ -50,12 +50,12 @@ module Ambition
             hash[:order] = order.join(', ')
           end
 
-          if limit = clauses[:slice]
-            hash[:limit] = limit.last
+          if clauses[:slice].last =~ /LIMIT (\d+)/
+            hash[:limit] = $1.to_i
           end
 
-          if offset = clauses[:offset]
-            hash[:offset] = offset.last
+          if clauses[:slice].last =~ /OFFSET (\d+)/
+            hash[:offset] = $1.to_i
           end
 
           hash
@@ -69,8 +69,7 @@ module Ambition
           sql = []
           sql << "WHERE #{hash[:conditions]}" unless hash[:conditions].blank?
           sql << "ORDER BY #{hash[:order]}"   unless hash[:order].blank?
-          sql << "LIMIT #{hash[:limit]}"      unless hash[:limit].blank?
-          sql << "OFFSET #{hash[:offset]}"    unless hash[:offset].blank?
+          sql << clauses[:slice]              unless hash[:slice].blank?
 
           @@select % [ @owner.table_name, sql.join(' ') ]
         end
