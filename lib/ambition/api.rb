@@ -1,6 +1,8 @@
 module Ambition
   module API
-    include Enumerable
+    AmbitionEnumerable = Enumerable.dup
+    AmbitionEnumerable.class_eval { remove_method :find; remove_method :find_all }
+    include AmbitionEnumerable
 
     ##
     # Entry methods
