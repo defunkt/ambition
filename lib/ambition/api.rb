@@ -67,11 +67,12 @@ module Ambition
     end
 
     def ambition_adapter
-      @@ambition_adapter
+      @@ambition_adapter[name] || @@ambition_adapter[superclass.name]
     end
 
     def ambition_adapter=(klass)
-      @@ambition_adapter = klass
+      @@ambition_adapter ||= {}
+      @@ambition_adapter[name] = klass
     end
 
     def ambition_owner
