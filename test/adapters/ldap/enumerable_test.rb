@@ -25,13 +25,13 @@ context "Each" do
     end
   end
 
-  # xspecify "limit and order" do
-  #   hash = { :limit => 5, :order => 'users.name' }
-  #   LDAPUser.expects(:find).with(:all, hash).returns([])
-  #   LDAPUser.sort_by { |m| m.name }.first(5).each do |user|
-  #     puts user.name
-  #   end
-  # end
+  xspecify "limit and order" do
+    hash = { :limit => 5, :sort_by => 'sn' }
+    LDAPUser.expects(:find).with(:all, hash).returns([])
+    LDAPUser.sort_by { |m| m.sn }.first(5).each do |user|
+      puts user.name
+    end
+  end
 end
 
 context "Enumerable Methods" do
