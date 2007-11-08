@@ -8,12 +8,17 @@ module Ambition
         end
 
         def kick
+          @owner.find(:all, to_hash)
         end
 
         def size
+          raise "Not Implemented"
         end
 
         def to_hash
+          hash = {}
+          hash[:filter] = to_s unless to_s.empty?
+          hash
         end
 
         def to_s
