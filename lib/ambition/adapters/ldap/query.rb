@@ -2,13 +2,14 @@ module Ambition
   module Adapters
     module LDAP
       class Query
-        def initialize(owner, clauses)
-          @owner   = owner
-          @clauses = clauses
+
+        attr_reader :context
+        def initialize(context)
+          @context = context
         end
 
         def kick
-          @owner.find(:all, to_hash)
+          @context.owner.find(:all, to_hash)
         end
 
         def size
@@ -22,8 +23,8 @@ module Ambition
         end
 
         def to_s
-          Array(@clauses[:select]).map { |clause| clause.to_s }.join
-          @clauses[:select].first.to_s
+          Array(@context.clauses[:select]).join
+          @context.clauses[:select].first.to_s
         end
       end
     end
