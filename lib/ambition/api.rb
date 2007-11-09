@@ -10,7 +10,8 @@ module Ambition
     end
 
     def sort_by(&block)
-      ambition_context << Processors::Sort.new(ambition_owner, block)
+      context = ambition_context 
+      context << Processors::Sort.new(context, block)
     end
 
     def entries
@@ -30,7 +31,8 @@ module Ambition
         length -= start
       end
 
-      ambition_context << Processors::Slice.new(ambition_owner, start, length)
+      context = ambition_context 
+      context << Processors::Slice.new(context, start, length)
     end
     alias_method :[], :slice
 

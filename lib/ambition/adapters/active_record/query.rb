@@ -28,12 +28,8 @@ module Ambition
             hash[:conditions] *= ' AND '
           end
 
-          unless (includes = clauses[:includes]).blank?
-            hash[:include] = includes.flatten
-          end
-
           if order = clauses[:sort]
-            hash[:order] = order.join(', ')
+            hash[:order] = order.map { |o| o.to_s }.join(', ')
           end
 
           if clauses[:slice].last =~ /LIMIT (\d+)/

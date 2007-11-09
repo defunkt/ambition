@@ -1,10 +1,10 @@
 module Ambition
   module Processors
     class Sort < Base
-      def initialize(owner, block)
-        @owner  = owner
-        @block  = block
-        @sorter = new_api_instance(@owner)
+      def initialize(context, block)
+        @context = context
+        @block   = block
+        @sorter  = new_api_instance
       end
 
       def process_call(args)
@@ -18,7 +18,7 @@ module Ambition
         # sort_by(&:name).to_s
         # [[:call, [:dvar, :args], :shift], :__send__, [:argscat, [:array, [:self]], [:dvar, :args]]]
         elsif args[1] == :__send__
-          "#{@owner.table_name}.#{value 'to_s'}"
+          @sorter.to_proc(value('to_s'))
 
         else
           raise args.inspect
