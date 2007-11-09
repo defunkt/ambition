@@ -101,11 +101,17 @@ module Ambition
         name   ||= self.name.split('::').last
         klass    = context.owner.ambition_adapter.const_get(name)
         instance = klass.new
-        instance.metaclass.send(:attr_accessor, :context)
-        instance.context = @context
-        instance.meta_def(:owner)   { context.owner   }
-        instance.meta_def(:clauses) { context.clauses }
-        instance.meta_def(:stash)   { context.stash   }
+
+        unless instance.respond_to? :context
+          klass.class_eval do
+            attr_accessor :context
+            def owner;    @context.owner   end
+            def clauses;  @context.clauses end
+            def stash;    @context.stash   end
+          end
+        end
+
+        instance.context = context
         instance
       end
 
