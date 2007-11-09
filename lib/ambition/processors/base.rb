@@ -94,11 +94,18 @@ module Ambition
       end
 
       def new_api_instance
-        klass    = @context.owner.ambition_adapter.const_get(self.class.name.split('::').last)
+        self.class.new_api_instance(@context)
+      end
+
+      def self.new_api_instance(context, name = nil)
+        name   ||= self.name.split('::').last
+        klass    = context.owner.ambition_adapter.const_get(name)
         instance = klass.new
         instance.metaclass.send(:attr_accessor, :context)
         instance.context = @context
-        instance.meta_def(:owner) { context.owner }
+        instance.meta_def(:owner)   { context.owner   }
+        instance.meta_def(:clauses) { context.clauses }
+        instance.meta_def(:stash)   { context.stash   }
         instance
       end
 

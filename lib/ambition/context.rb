@@ -3,20 +3,25 @@ module Ambition
     include API
 
     ##
-    # These are the methods your Query class will want access to.
+    # These are the methods your Query and Translator classes will 
+    # want to access.
     #
-    #   +owner+   is the class everything was called on.  Like `User' 
-    #   +clauses+ is a hash of arrays, one key per processor.
+    #   +owner+   The class everything was called on.  Like `User' 
+    #
+    #   +clauses+ A hash of arrays, one key per processor.
     #             So, if someone called User.select, your
     #             +clauses+ hash would have a :select key with
     #             an array of translated strings via your Select
     #             class.
-    attr_reader :clauses, :owner
+    #
+    #   +stash+   A place for you to stick stuff.  Available to
+    #             all Translators and your Query class.
+    attr_reader :clauses, :owner, :stash
 
     def initialize(owner)
       @owner   = owner
       @clauses = {}
-      @hash    = {}
+      @stash   = {}
     end
 
     def ambition_context
@@ -29,16 +34,8 @@ module Ambition
       self
     end
 
-    def [](key)
-      @hash[key]
-    end
-
-    def []=(key, value)
-      @hash[key] = value
-    end
-
     def adapter_query
-      @owner.ambition_adapter::Query.new(self)
+      Processors::Base.new_api_instance(self, :Query)
     end
 
     def to_hash

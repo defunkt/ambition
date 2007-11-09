@@ -1,24 +1,15 @@
 module Ambition
-#  module Adapters
   module Adapters
     module ActiveRecord
       class Query
         @@select = 'SELECT * FROM %s %s'
 
-        def initialize(context)
-          @context = context
-        end
-
-        def clauses
-          @context.clauses
-        end
-
         def kick
-          @context.owner.find(:all, to_hash)
+          owner.find(:all, to_hash)
         end
 
         def size
-          @context.owner.count(to_hash)
+          owner.count(to_hash)
         end
 
         def to_hash
@@ -41,7 +32,7 @@ module Ambition
             hash[:offset] = $1.to_i
           end
 
-          hash[:include] = @context[:include] if @context[:include]
+          hash[:include] = stash[:include] if stash[:include]
 
           hash
         end
@@ -49,14 +40,14 @@ module Ambition
         def to_s
           hash = to_hash
 
-          raise "Sorry, I can't construct SQL with complex joins (yet)" unless hash[:includes].blank?
+          raise "Sorry, I can't construct SQL with complex joins (yet)" unless hash[:include].blank?
 
           sql = []
           sql << "WHERE #{hash[:conditions]}" unless hash[:conditions].blank?
           sql << "ORDER BY #{hash[:order]}"   unless hash[:order].blank?
           sql << clauses[:slice].last         unless hash[:slice].blank?
 
-          @@select % [ @context.owner.table_name, sql.join(' ') ]
+          @@select % [ owner.table_name, sql.join(' ') ]
         end
         alias_method :to_sql, :to_s
       end
