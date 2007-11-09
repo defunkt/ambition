@@ -1,5 +1,6 @@
 # Analog of the join_test.rb in the ActiveRecord adapter.
 # Not all adapters will need these behaviors.  E.g. there are no joins in LDAP.
+# ActiveLdap has associations, but doesn't try to fake joins.
 # CouchDb doesn't so much have joins as it has the capacity for creative
 # use of its views.
 
