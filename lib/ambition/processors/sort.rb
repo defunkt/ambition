@@ -9,16 +9,31 @@ module Ambition
 
       def process_call(args)
         if args.first.last == @receiver
-          @sorter.by(*args[1..-1])
+          @sorter.sort_by(*args[1..-1])
 
+        # sort_by { |m| -m.age }
         # [[:call, [:dvar, :m], :age], :-@]
-        elsif args.last == :-@
-          @sorter.not_by(*args.first[2..-1])
+        elsif args[0][1][-1] == @receiver && args.last == :-@
+          @sorter.reverse_sort_by(*args.first[2..-1])
 
         # sort_by(&:name).to_s
         # [[:call, [:dvar, :args], :shift], :__send__, [:argscat, [:array, [:self]], [:dvar, :args]]]
         elsif args[1] == :__send__
           @sorter.to_proc(value('to_s'))
+
+        # sort_by { |m| m.ideas.title } 
+        # [[:call, [:dvar, :m], :ideas], :title]
+        elsif args[0][1][-1] == @receiver
+          first = args.first.last
+          last  = args.last
+          @sorter.chained_sort_by(first, last)
+
+        # sort_by { |m| [ m.ideas.title, -m.invites.email ] } 
+        # [[:call, [:call, [:dvar, :m], :invites], :email], :-@]
+        elsif args[0][1][1][-1] == @receiver && args.last == :-@
+          first = args.first[1].last
+          last  = args.first.last
+          @sorter.chained_reverse_sort_by(first, last)
 
         else
           raise args.inspect

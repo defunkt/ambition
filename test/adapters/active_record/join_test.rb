@@ -34,17 +34,16 @@ context "ActiveRecord Adapter" do
       }
     end
 
-    xspecify "complex joins have no to_s" do
+    specify "complex joins have no to_s" do
       sql = User.select { |m| m.account.id > 20 }
       should.raise { sql.to_s }
     end
 
     specify "non-existant associations" do
-      sql = User.select { |m| m.liquor.brand == 'Jack' }
-      should.raise(NoMethodError) { sql.to_hash } 
+      should.raise(NoMethodError) { User.select { |m| m.liquor.brand == 'Jack' } }
     end
 
-    xspecify "in order" do
+    specify "in order" do
       sql = User.sort_by { |m| m.ideas.title }
       sql.to_hash.should ==  { 
         :order   => "ideas.title",
@@ -52,7 +51,7 @@ context "ActiveRecord Adapter" do
       }
     end
 
-    xspecify "in a more complex order" do
+    specify "in a more complex order" do
       sql = User.sort_by { |m| [ m.ideas.title, -m.invites.email ] }
       sql.to_hash.should ==  { 
         :order   => "ideas.title, invites.email DESC",
