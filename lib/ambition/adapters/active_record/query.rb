@@ -1,4 +1,5 @@
 module Ambition
+#  module Adapters
   module Adapters
     module ActiveRecord
       class Query
@@ -29,7 +30,7 @@ module Ambition
           end
 
           if order = clauses[:sort]
-            hash[:order] = order.map { |o| o.to_s }.join(', ')
+            hash[:order] = order.join(', ')
           end
 
           if clauses[:slice].last =~ /LIMIT (\d+)/
@@ -53,7 +54,7 @@ module Ambition
           sql = []
           sql << "WHERE #{hash[:conditions]}" unless hash[:conditions].blank?
           sql << "ORDER BY #{hash[:order]}"   unless hash[:order].blank?
-          sql << clauses[:slice]              unless hash[:slice].blank?
+          sql << clauses[:slice].last         unless hash[:slice].blank?
 
           @@select % [ @context.owner.table_name, sql.join(' ') ]
         end

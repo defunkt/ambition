@@ -25,7 +25,7 @@ module Ambition
 
     def <<(clause)
       @clauses[clause.key] ||= []
-      @clauses[clause.key] << clause
+      @clauses[clause.key] << clause.to_s
       self
     end
 
