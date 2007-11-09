@@ -1,10 +1,10 @@
 module Ambition
   module Processors
     class Select < Base
-      def initialize(owner, block)
-        @owner    = owner
+      def initialize(context, block)
+        @context  = context
         @block    = block
-        @selector = new_api_instance(@owner)
+        @selector = new_api_instance
       end
 
       def process_call(args)
@@ -36,7 +36,7 @@ module Ambition
         #   [[:call, [:dvar, :m], :name], :upcase]
         elsif args.first.first == :call && args.first[1].last == @receiver
           receiver, method = args
-          @selector.send(method, receiver.last)
+          @selector.chained_call(receiver.last, method)
 
         else
           raise args.inspect

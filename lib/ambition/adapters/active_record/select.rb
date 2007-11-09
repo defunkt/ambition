@@ -2,8 +2,18 @@ module Ambition
   module Adapters
     module ActiveRecord
       class Select < Base
-        def call(*methods)
-          "#{owner.table_name}.#{quote_column_name methods.first}"
+        def call(method)
+          "#{owner.table_name}.#{quote_column_name method}"
+        end
+
+        def chained_call(*methods)
+          if reflection = owner.reflections[methods.first]
+            context[:include] ||= []
+            context[:include] << methods.first
+            "#{reflection.table_name}.#{quote_column_name methods.last}"
+          else 
+            send(methods[1], methods.first)
+          end
         end
 
         def both(left, right)
@@ -69,7 +79,6 @@ module Ambition
           "#{right} IN (#{left})"
         end
 
-      private
         def downcase(column)
           "LOWER(#{owner.table_name}.#{quote_column_name column})"
         end

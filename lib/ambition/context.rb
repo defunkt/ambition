@@ -2,9 +2,21 @@ module Ambition
   class Context
     include API
 
+    ##
+    # These are the methods your Query class will want access to.
+    #
+    #   +owner+   is the class everything was called on.  Like `User' 
+    #   +clauses+ is a hash of arrays, one key per processor.
+    #             So, if someone called User.select, your
+    #             +clauses+ hash would have a :select key with
+    #             an array of translated strings via your Select
+    #             class.
+    attr_reader :clauses, :owner
+
     def initialize(owner)
       @owner   = owner
       @clauses = {}
+      @hash    = {}
     end
 
     def ambition_context
@@ -13,12 +25,20 @@ module Ambition
 
     def <<(clause)
       @clauses[clause.key] ||= []
-      @clauses[clause.key] << clause
+      @clauses[clause.key] << clause.to_s
       self
     end
 
+    def [](key)
+      @hash[key]
+    end
+
+    def []=(key, value)
+      @hash[key] = value
+    end
+
     def adapter_query
-      @owner.ambition_adapter::Query.new(@owner, @clauses)
+      @owner.ambition_adapter::Query.new(self)
     end
 
     def to_hash
@@ -38,13 +58,8 @@ module Ambition
     end
     alias_method :length, :size
 
-    alias_method :actual_inspect, :inspect
-    def inspect(debug = false)
-      if debug
-        actual_inspect
-      else
-        "(Query object: call #to_s or #to_hash to inspect, call an Enumerable (such as #each or #first) to request data)"
-      end
+    def inspect
+      "(Query object: call #to_s or #to_hash to inspect, call an Enumerable (such as #each or #first) to request data)"
     end
   end
 end

@@ -10,6 +10,10 @@ module Ambition
           args.map { |arg| "#{owner.table_name}.#{quote_column_name arg} DESC" }
         end
 
+        def to_proc(symbol)
+          "#{owner.table_name}.#{symbol}"
+        end
+
         def rand
           'RAND()'
         end

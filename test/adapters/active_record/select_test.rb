@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/helper'
 
-context "ActiveRecord Adapter :: Select" do
-  context "Where (using select)" do
+context "ActiveRecord Adapter" do
+  context "Select" do
     specify "simple ==" do
       sql = User.select { |m| m.name == 'jon' }.to_s
       sql.should == "SELECT * FROM users WHERE users.name = 'jon'"
@@ -153,7 +153,7 @@ context "ActiveRecord Adapter :: Select" do
     end
   end
 
-  context "Where (using detect)" do
+  context "Detect" do
     specify "simple ==" do
       User.expects(:select).returns(mock(:first => true))
       User.detect { |m| m.name == 'chris' }
@@ -165,7 +165,7 @@ context "ActiveRecord Adapter :: Select" do
     end
   end
 
-  xcontext "Where (using [])" do
+  xcontext "[]" do
     specify "finds a single row" do
       User.expects(:find).with(1)
       User[1]

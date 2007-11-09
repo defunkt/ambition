@@ -1,11 +1,11 @@
 module Ambition
   module Processors
     class Slice < Base
-      def initialize(owner, start, length)
-        @owner  = owner
-        @start  = start
-        @length = length
-        @slicer = new_api_instance(@owner)
+      def initialize(context, start, length)
+        @context = context
+        @start   = start
+        @length  = length
+        @slicer  = new_api_instance
       end
 
       def to_s

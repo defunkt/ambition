@@ -93,11 +93,12 @@ module Ambition
         eval variable, @block
       end
 
-      def new_api_instance(owner)
-        klass    = owner.ambition_adapter.const_get(self.class.name.split('::').last)
+      def new_api_instance
+        klass    = @context.owner.ambition_adapter.const_get(self.class.name.split('::').last)
         instance = klass.new
-        instance.metaclass.send(:attr_accessor, :owner)
-        instance.owner = owner
+        instance.metaclass.send(:attr_accessor, :context)
+        instance.context = @context
+        instance.meta_def(:owner) { context.owner }
         instance
       end
 
