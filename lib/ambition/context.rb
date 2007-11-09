@@ -47,7 +47,7 @@ module Ambition
     end
     alias_method :length, :size
 
-    def inspect(debug = false)
+    def inspect
       "(Query object: call #to_s or #to_hash to inspect, call an Enumerable (such as #each or #first) to request data)"
     end
   end
