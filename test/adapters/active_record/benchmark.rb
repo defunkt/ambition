@@ -1,5 +1,5 @@
 $:.unshift File.dirname(__FILE__) + '/../../../lib'
-%w( rubygems ambition/adapters/active_record benchmark ).each { |f| require f }
+%w( rubygems ambition ambition/adapters/active_record benchmark ).each { |f| require f }
 
 class User < ActiveRecord::Base
   def self.reflections
@@ -20,7 +20,7 @@ end
 class Reflection < Struct.new(:macro, :primary_key_name, :name, :table_name)
 end
 
-Times = 1000
+Times = 10000
 
 Benchmark.bm(30) do |x|
   x.report 'simple select' do
