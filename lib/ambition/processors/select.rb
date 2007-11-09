@@ -1,10 +1,10 @@
 module Ambition
   module Processors
     class Select < Base
-      def initialize(owner, block)
-        @owner    = owner
+      def initialize(context, block)
+        @context  = context
         @block    = block
-        @selector = new_api_instance(@owner)
+        @selector = new_api_instance
       end
 
       def process_call(args)

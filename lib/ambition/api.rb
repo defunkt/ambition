@@ -5,7 +5,8 @@ module Ambition
     ##
     # Entry methods
     def select(&block)
-      ambition_context << Processors::Select.new(ambition_owner, block)
+      context = ambition_context 
+      context << Processors::Select.new(context, block)
     end
 
     def sort_by(&block)

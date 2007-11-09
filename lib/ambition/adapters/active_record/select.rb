@@ -8,6 +8,8 @@ module Ambition
 
         def chained_call(*methods)
           if reflection = owner.reflections[methods.first]
+            context[:include] ||= []
+            context[:include] << methods.first
             "#{reflection.table_name}.#{quote_column_name methods.last}"
           else 
             send(methods[1], methods.first)
