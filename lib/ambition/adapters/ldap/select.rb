@@ -54,7 +54,6 @@ module Ambition
           bits = left.map { |item| "(#{right}=#{item})" }
           "(|#{bits})"
         end
-
       end
     end
   end
