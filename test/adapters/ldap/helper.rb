@@ -5,19 +5,16 @@ module ActiveLdap
   end
 end
 
-
 module ActiveLdap
   module Operations
-    class << self
-      def included(base)
-        super
-        base.class_eval do
-          # ...
-          extend(Find)
-          # ...
-          include(Find)
-         # ...
-        end
+    def self.included(base)
+      super
+      base.class_eval do
+        # ...
+        extend(Find)
+        # ...
+        include(Find)
+        # ...
       end
     end
     module Find
