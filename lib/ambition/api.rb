@@ -70,7 +70,9 @@ module Ambition
     end
 
     def ambition_adapter
-      @@ambition_adapter[name] || @@ambition_adapter[superclass.name]
+      name   = respond_to?(:name) ? name : self.class.name
+      parent = respond_to?(:superclass) ? superclass : self.class.superclass
+      @@ambition_adapter[name] || @@ambition_adapter[parent.name]
     end
 
     def ambition_adapter=(klass)
