@@ -1,6 +1,6 @@
 module Ambition
   module Adapters
-    module LDAP
+    module ActiveLdap
       class Select < Base
         def call(*methods)
           method = methods.first.to_s

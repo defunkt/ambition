@@ -1,6 +1,6 @@
 module Ambition
   module Adapters
-    module LDAP
+    module ActiveLdap
       class Base
         def sanitize(object)
           case object
