@@ -38,6 +38,7 @@ rescue LoadError
 end
 
 delete_task :test
+delete_task :install_gem
 
 Rake::TestTask.new('test') do |t|
   t.pattern = 'test/*_test.rb'
@@ -72,4 +73,9 @@ desc 'Generate coverage reports'
 task :rcov do
   `rcov -e gems test/*_test.rb`
   puts 'Generated coverage reports.'
+end
+
+desc 'Install as a gem'
+task :install_gem do
+  puts `rake package && gem install pkg/ambition-#{Version}.gem`
 end
