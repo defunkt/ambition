@@ -1,6 +1,6 @@
 class AmbitionAdapterGenerator < RubiGen::Base
-  DEFAULT_SHEBANG = File.join(Config::CONFIG['bindir'], Config::CONFIG['ruby_install_name'])
-  default_options :author => nil
+#  DEFAULT_SHEBANG = File.join(Config::CONFIG['bindir'], Config::CONFIG['ruby_install_name'])
+#  default_options :author => nil
 
   attr_reader :adapter_name, :adapter_module
   
@@ -23,7 +23,8 @@ class AmbitionAdapterGenerator < RubiGen::Base
       )
       dirs.each { |path| m.directory path }
 
-      # Create stubs
+      ##
+      # Translator / Query stubs
       adapter_path = "lib/ambition/adapters/#{adapter_name}"
 
       %w( base query select slice sort ).each do |file|
@@ -32,6 +33,14 @@ class AmbitionAdapterGenerator < RubiGen::Base
 
       m.template 'lib/init.rb.erb', "#{adapter_path}.rb"
 
+      ##
+      # Test stubs
+      Dir[File.dirname(__FILE__) + '/templates/test/*.rb'].each do |file|
+        m.template "test/#{file}.rb.erb", "test/#{file}.rb"
+      end
+
+      ##
+      # Normal files
       files = %w( README Rakefile )
       files.each do |file|
         m.file file, file
