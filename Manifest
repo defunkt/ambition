@@ -7,6 +7,11 @@
 ./app_generators/ambition_adapter/templates/lib/sort.rb.erb
 ./app_generators/ambition_adapter/templates/Rakefile
 ./app_generators/ambition_adapter/templates/README
+./app_generators/ambition_adapter/templates/test/association_test.rb.erb
+./app_generators/ambition_adapter/templates/test/detect_test.rb.erb
+./app_generators/ambition_adapter/templates/test/helper.rb.erb
+./app_generators/ambition_adapter/templates/test/index_test.rb.erb
+./app_generators/ambition_adapter/templates/test/select_test.rb.erb
 ./app_generators/ambition_adapter/USAGE
 ./bin/ambition_adapter
 ./lib/ambition/adapters/active_ldap/base.rb
@@ -50,5 +55,15 @@
 ./test/adapters/active_record/sort_test.rb
 ./test/adapters/active_record/source_test.rb
 ./test/adapters/active_record/types_test.rb
+./test/adapters/exemplar/association_test.rb
+./test/adapters/exemplar/count_test.rb
+./test/adapters/exemplar/detect_test.rb
+./test/adapters/exemplar/enumerable_test.rb
+./test/adapters/exemplar/helper.rb
+./test/adapters/exemplar/index_operator.rb
+./test/adapters/exemplar/reject_test.rb
+./test/adapters/exemplar/select_test.rb
+./test/adapters/exemplar/slice_test.rb
+./test/adapters/exemplar/sort_test.rb
 ./test/debug
 ./test/helper.rb

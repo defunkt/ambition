@@ -35,8 +35,9 @@ class AmbitionAdapterGenerator < RubiGen::Base
 
       ##
       # Test stubs
-      Dir[File.dirname(__FILE__) + '/templates/test/*.rb'].each do |file|
-        m.template "test/#{file}.rb.erb", "test/#{file}.rb"
+      Dir[File.dirname(__FILE__) + '/templates/test/*.rb.erb'].each do |file|
+        file = File.basename(file, '.*')
+        m.template "test/#{file}.erb", "test/#{file}"
       end
 
       ##
