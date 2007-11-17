@@ -148,6 +148,12 @@ context "ActiveRecord Adapter" do
       sql.should == "SELECT * FROM users WHERE users.created_at = '#{2.days.ago.to_s(:db)}'"
     end
 
+    specify "deep chains" do
+      should.raise do
+        User.select { |m| m.created_at.something.else.perhaps }.to_s
+      end
+    end
+
     specify "inspect" do
       User.select { |u| u.name }.inspect.should.match %r(call #to_s or #to_hash)
     end

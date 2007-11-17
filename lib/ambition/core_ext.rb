@@ -41,10 +41,6 @@ class Array
   def =~(array)
     struct_eql? array
   end
-
-  define_method '!~' do |array|
-    !(self =~ array)
-  end
 end
 
 ##
@@ -73,6 +69,7 @@ end
 
 class Array
   def struct_eql?(o, counter = [0], my_rec = {}, his_rec = {}, helper = {})
+    return true if o == :X
     return true if o.struct_object_id == struct_object_id
     return false unless self.class === o
     return false if o.size != size
@@ -111,6 +108,7 @@ end
 
 class Object
   def struct_eql?(other, counter = [0], my_rec = {}, his_rec = {}, helper = {})
+    return true if other == :X
     return true if other.struct_object_id == struct_object_id
     return false unless self.class === other
     return true if immediate?

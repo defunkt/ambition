@@ -21,8 +21,12 @@ context "Array#=~" do
     assert [:call, [:dvar, :blah], :matching] !~ [:call, [:dvar, :who], :X]
   end
   
+  specify "array wildcard matching" do
+    assert [:array, [:lit, true]] =~ [:array, :X]
+  end
+  
   specify "mixed type matching" do
-    assert [:lit, true] =~ [:lit, true]
+    assert [:lit, true] =~ [:lit, :X]
   end
   
   specify "failed mixed type matching" do

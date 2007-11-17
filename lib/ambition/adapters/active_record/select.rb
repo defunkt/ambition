@@ -11,8 +11,10 @@ module Ambition
             stash[:include] ||= []
             stash[:include] << methods.first
             "#{reflection.table_name}.#{quote_column_name methods.last}"
-          else 
+          elsif respond_to? methods[1]
             send(methods[1], methods.first)
+          else
+            raise "I don't understand: #{methods.inspect}"
           end
         end
 

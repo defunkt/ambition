@@ -40,7 +40,7 @@ context "ActiveRecord Adapter" do
     end
 
     specify "non-existant associations" do
-      should.raise(NoMethodError) { User.select { |m| m.liquor.brand == 'Jack' } }
+      should.raise { User.select { |m| m.liquor.brand == 'Jack' } }
     end
 
     specify "in order" do
