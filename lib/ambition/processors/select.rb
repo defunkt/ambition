@@ -29,18 +29,18 @@ module Ambition
 
         # Property of passed arg:
         #   [[:dvar, :m], :name]
-        elsif args =~ [ [:dvar, @receiver], :X ]
+        elsif args.first.last == @receiver
           @selector.call(*args[1..-1])
 
         # Method call: 
         #   [[:call, [:dvar, :m], :name], :upcase]
-        elsif args =~ [ [:call, [:dvar, @receiver], :X], :X ]
+        elsif args.first.first == :call && args.first[1].last == @receiver
           receiver, method = args
           @selector.chained_call(receiver.last, method)
 
         # Deep, chained call:
         #   [[:call, [:call, [:call, [:dvar, :m], :created_at], :something], :else], :perhaps]
-        elsif args =~ [[:call, [:call, :X, :X], :X], :X]
+        elsif args.flatten.include? @receiver
           calls = []
 
           until args.empty?
