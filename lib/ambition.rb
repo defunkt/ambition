@@ -1,7 +1,7 @@
 require 'ambition/enumerable'
 require 'ambition/api'
 require 'ambition/context'
-require 'ambition/proc_to_ruby'
+require 'ambition/core_ext'
 
 require 'ambition/processors/base'
 require 'ambition/processors/select'
