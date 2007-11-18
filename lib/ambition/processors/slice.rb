@@ -1,7 +1,7 @@
 module Ambition
   module Processors
     class Slice < Base
-      def initialize(context, start, length)
+      def initialize(context, start, length=nil)
         @context = context
         @start   = start
         @length  = length

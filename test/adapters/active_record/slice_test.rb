@@ -37,7 +37,7 @@ context "ActiveRecord Adapter" do
     specify "[] with range" do
       conditions = { :conditions => "users.name = 'jon'", :limit => 10, :offset => 10 }
       User.expects(:find).with(:all, conditions)
-      @sql[10..20].entries
+      @sql[11..20].entries
     end
   end
 end

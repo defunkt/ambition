@@ -24,13 +24,12 @@ module Ambition
     end
 
     def slice(start, length = nil)
-      if start.is_a? Range
-        length  = start.end
-        length -= 1 if start.exclude_end?
-        start = start.first
-        length -= start
-      end
-
+      # if start.is_a? Range
+      #   length  = start.end
+      #   length -= 1 if start.exclude_end?
+      #   start = start.first
+      #   length -= start
+      # end
       context = ambition_context 
       context << Processors::Slice.new(context, start, length)
     end
