@@ -3,15 +3,19 @@ module Ambition
     module <%= adapter_module %>
       class Query < Base
         def kick
+          raise "Example: owner.find(:all, to_hash)"
         end
 
         def size
+          raise "Example: owner.count(to_hash)"
         end
 
         def to_hash
+          raise "Not implemented"
         end
 
         def to_s
+          raise "Not implemented"
         end
       end
     end
