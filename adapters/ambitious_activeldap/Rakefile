@@ -1,0 +1,32 @@
+require 'rake'
+require 'rake/testtask'
+require 'rake/rdoctask'
+
+Version = '0.1.0'
+
+begin
+  require 'rubygems'
+  gem 'echoe', '>=2.7'
+  ENV['RUBY_FLAGS'] = ""
+  require 'echoe'
+
+  Echoe.new('ambitious-activeldap', Version) do |p|
+    p.project        = 'ambition'
+    p.summary        = "Ambition builds yer API calls from plain jane Ruby."
+    p.description    = "Ambition builds yer API calls from plain jane Ruby."
+    p.url            = "http://errtheblog.com/"
+    p.author         = 'Chris Wanstrath'
+    p.email          = "chris@ozmm.org"
+    p.dependencies << 'ambition >=0.5.0'
+    p.dependencies << 'ruby-activeldap >=0.8.3.1'
+    p.test_pattern = 'test/*_test.rb'
+  end
+
+rescue LoadError 
+  puts "Not doing any of the Echoe gemmy stuff, because you don't have the specified gem versions"
+end
+
+desc 'Install as a gem'
+task :install_gem do
+  puts `rake package && gem install pkg/ambitious-activeldap-#{Version}.gem`
+end

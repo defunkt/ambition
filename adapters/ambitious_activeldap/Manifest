@@ -1,0 +1,8 @@
+lib/ambition/adapters/active_ldap/base.rb
+lib/ambition/adapters/active_ldap/query.rb
+lib/ambition/adapters/active_ldap/select.rb
+test/enumerable_test.rb
+test/helper.rb
+test/integration_test.rb
+test/select_test.rb
+Manifest

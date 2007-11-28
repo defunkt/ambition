@@ -1,3 +1,4 @@
+require 'ambition'
 require 'active_ldap'
 require 'ambition/adapters/active_ldap/query'
 require 'ambition/adapters/active_ldap/base'

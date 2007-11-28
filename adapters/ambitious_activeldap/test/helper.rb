@@ -1,5 +1,6 @@
-require File.dirname(__FILE__) + '/../../helper'
+%w( rubygems test/spec mocha redgreen English ).each { |f| require f }
 
+$LOAD_PATH.unshift *[ File.dirname(__FILE__) + '/../lib', File.dirname(__FILE__) + '/../../../lib' ]
 require 'ambition/adapters/active_ldap'
 
 ActiveLdap::Base.class_eval do
