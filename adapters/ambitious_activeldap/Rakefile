@@ -1,6 +1,4 @@
 require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
 
 Version = '0.1.0'
 
@@ -10,16 +8,17 @@ begin
   ENV['RUBY_FLAGS'] = ""
   require 'echoe'
 
-  Echoe.new('ambitious-activeldap', Version) do |p|
-    p.project        = 'ambition'
-    p.summary        = "Ambition builds yer API calls from plain jane Ruby."
-    p.description    = "Ambition builds yer API calls from plain jane Ruby."
-    p.url            = "http://errtheblog.com/"
+  Echoe.new('ambitious-activeldap') do |p|
+    p.dependencies  << 'ruby-activeldap >=0.8.3.1'
+    p.summary        = "An ambitious adapter for ActiveLDAP"
     p.author         = 'Chris Wanstrath'
     p.email          = "chris@ozmm.org"
-    p.dependencies << 'ambition >=0.5.0'
-    p.dependencies << 'ruby-activeldap >=0.8.3.1'
-    p.test_pattern = 'test/*_test.rb'
+
+    p.project        = 'ambition'
+    p.url            = "http://ambition.rubyforge.org/"
+    p.test_pattern   = 'test/*_test.rb'
+    p.version        = Version
+    p.dependencies  << 'ambition >=0.5.0'
   end
 
 rescue LoadError 
