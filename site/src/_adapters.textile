@@ -1,0 +1,6 @@
+  * "ActiveRecord":adapters/activerecord.html
+  * ActiveLDAP
+  * Facebook
+  * XPath
+  * CouchDB
+  * DataMapper

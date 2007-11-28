@@ -1,0 +1,49 @@
+h2. Plain Jane Ruby
+
+Imagine if instead of writing SQL, you could write Ruby.  Instead of writing LDAP, you
+could write Ruby.  Instead of learning some esoteric API, you just stick to one you know 
+and love.  
+
+Imagine *A*mbition.  
+
+<pre class="ruby">
+>> LDAP::User.select { |m| m.name == 'jon' && m.age == 21 }.to_s
+=> "(&(name=jon)(age=21))" 
+
+>> SQL::User.select { |m| m.name == 'jon' && m.age == 21 }.to_s
+=> "SELECT * FROM users WHERE users.name = 'jon' AND users.age = 21"
+</pre>
+
+It "started":http://errtheblog.com/post/10722 with SQL, but it's become so much more.  
+
+h2. The Elevator Pitch
+
+Ambition is a framework for writing adapters.  Adapters are RubyGems which depend on the 
+@ambition@ gem and are named something along the lines of @ambitious-activerecord@.  They typically 
+use Ambition to turn plain jane Ruby into some sort of domain specific query which can be executed.
+
+Anyone can write and release an adapter.  This site describes how to write adapters using
+Ambition and also hosts a few.
+
+h2. The Community
+
+We've got a hoppin' community over at the "Google Group":http://groups.google.com/group/ambition-rb.  Feel
+free to jump in with any questions, ideas, or top 5 favorite bands discussions.
+
+The initial blog posts were "this":http://errtheblog.com/post/10722 and "that":http://errtheblog.com/post/11998.  
+Most of what they describe has become the @ambitious-activerecord@ gem.
+
+h2. Ambitious Adapters
+
+There are a few adapters in development or released.  
+
+%INCLUDE _adapters.textile%
+
+For more information on adapters, hit up the "adapters":adapters.html page.
+
+h2. Development
+
+Development discussion happens in the "Google Group":http://groups.google.com/group/ambition-rb.  
+Stay up to date by following Chris' git repository:
+
+@git clone git://errtheblog.com/git/ambition@
