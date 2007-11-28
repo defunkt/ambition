@@ -30,7 +30,6 @@ begin
     p.email          = "chris@ozmm.org"
     p.dependencies << 'ParseTree =2.0.1'
     p.dependencies << 'ruby2ruby =1.1.7'
-    p.dependencies << 'activerecord >=1.15.0'
     p.test_pattern = 'test/*_test.rb'
     p.ignore_pattern = /^(\.git|site|adapters).+/
   end
@@ -47,13 +46,13 @@ Rake::TestTask.new('test') do |t|
 end
 
 Rake::TestTask.new('test:adapters') do |t|
-  t.pattern = 'test/adapters/**/*_test.rb'
+  t.pattern = 'adapters/*/test/*_test.rb'
 end
 
-Dir['test/adapters/*'].each do |adapter|
+Dir['adapters/*'].each do |adapter|
   adapter = adapter.split('/').last
-  Rake::TestTask.new("test:adapters:#{adapter}") do |t|
-    t.pattern = "test/adapters/#{adapter}/*_test.rb"
+  Rake::TestTask.new("test:adapters:#{adapter.sub('ambitious_','')}") do |t|
+    t.pattern = "adapters/#{adapter}/test/*_test.rb"
   end
 end
 
