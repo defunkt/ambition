@@ -17,24 +17,26 @@ def delete_task(args, &block) Rake::Task.delete_task(args, &block) end
 
 begin
   require 'rubygems'
-  gem 'echoe', '=1.3'
+  gem 'echoe', '>=2.7'
   ENV['RUBY_FLAGS'] = ""
   require 'echoe'
 
   Echoe.new('ambition', Version) do |p|
-    p.rubyforge_name = 'err'
-    p.summary        = "Ambition builds SQL from plain jane Ruby."
-    p.description    = "Ambition builds SQL from plain jane Ruby."
+    p.project = 'err'
+    p.summary        = "Ambition builds yer API calls from plain jane Ruby."
+    p.description    = "Ambition builds yer API calls from plain jane Ruby."
     p.url            = "http://errtheblog.com/"
     p.author         = 'Chris Wanstrath'
     p.email          = "chris@ozmm.org"
-    p.extra_deps << ['ParseTree',    '=2.0.1']
-    p.extra_deps << ['ruby2ruby',    '=1.1.7']
-    p.extra_deps << ['activerecord', '>=1.15.0']
-    p.test_globs = 'test/*_test.rb'
+    p.dependencies << 'ParseTree =2.0.1'
+    p.dependencies << 'ruby2ruby =1.1.7'
+    p.dependencies << 'activerecord >=1.15.0'
+    p.test_pattern = 'test/*_test.rb'
+    p.ignore_pattern = ['.git']
   end
 
 rescue LoadError 
+  puts "Not doing any of the Echoe gemmy stuff, because you don't have the specified gem versions"
 end
 
 delete_task :test
