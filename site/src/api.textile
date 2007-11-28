@@ -1,0 +1,5 @@
+h2. The API
+
+If you haven't yet read the "adapters":adapters.html page, now is the perfect time.
+
+

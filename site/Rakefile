@@ -3,6 +3,9 @@ require 'redcloth'
 require 'rake'
 require 'rake/contrib/sshpublisher'
 
+    StaticFiles = %w( png gif jpeg jpg css js )
+LiveDirectories = %w( adapters textile static )
+
 task :default => [ :clean, :build ]
 
 desc "Clean generated files"
@@ -11,18 +14,22 @@ task :clean do
 end
 
 def compile(file)
-  textile = File.read(file)
   layout = File.read('src/layout.textile')
-  layout.sub('CONTENT', RedCloth.new(textile).to_html).gsub('PAGE', File.basename(file).split('.').first)
+  layout.sub('%CONTENT%', compile_without_layout(file)).gsub('%PAGE%', File.basename(file).split('.').first)
+end
+
+def compile_without_layout(file)
+  textile = File.read(file).gsub(/%INCLUDE (.+)%/) { |match| compile_without_layout("src/#{$1}") }
+  RedCloth.new(textile).to_html
 end
 
 desc "Build live HTML files"
 task :build do
-  FileUtils.mkdir_p 'live/textile'
-  Dir['src/*.textile'].each do |file|
+  LiveDirectories.each { |dir| FileUtils.mkdir_p "live/#{dir}" }
+  Dir['src/**/*.textile'].each do |file|
     next if File.basename(file) == 'layout.textile'
 
-    file_name = File.basename(file).sub('.textile', '.html')
+    file_name = file.sub('src/', '').sub('.textile', '.html')
     live_file = "live/#{file_name}"
 
     unless uptodate?(live_file, file) && uptodate?(live_file, "src/layout.textile")
@@ -32,8 +39,9 @@ task :build do
     end
   end
 
-  Dir['src/*.{png,gif,jpeg,jpg,css}'].each do |file|
-    file = File.basename(file)
+  static_files = "{#{StaticFiles.join(',')}}"
+  Dir["src/**/*.#{static_files}"].each do |file|
+    file = file.sub('src/','')
     src, live = "src/#{file}", "live/#{file}"
     unless uptodate? live, src
       cp src, live 

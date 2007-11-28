@@ -1,0 +1,85 @@
+h2. The Adapters
+
+There are a few adapters in development or released.  Here they are.
+
+%INCLUDE _adapters.textile%
+
+h2. The Anatomy of an Adapter
+
+Ambition adapters consist of two parts: *Translators* and the *Query*.  Translators
+are used to translate plane jane Ruby into strings, which your Query then uses to
+build a query and execute.
+
+There are three translators: @Select@, @Slice@, and @Sort@.  Their names correspond to the
+API method they represent.
+
+Here's how the ActiveRecord adapter maps translator classes to SQL clauses:
+
+  * @Select@ =&gt; @WHERE@
+  * @Slice@ =&gt; @LIMIT@ and @OFFSET@
+  * @Sort@ =&gt; @ORDER BY@
+
+A straightforward translator/query API reference can be found on the "api":api.html page,
+but for now here's an example of a method on the @Select@ translator:
+
+<pre class="ruby">
+def both(left, right)
+  "(#{left} AND #{right})"
+end
+</pre>
+
+This method represents a @&&@ call.  We might imagine that the following code:
+
+<pre class="ruby">
+1 && 'two'
+</pre>
+
+will result in @both@ being called with @1@ and @'two'@, returning @(1 and two)@.
+
+Clauses, which are what your translators build, are constructed piecemeal in this fashion.
+
+h2. The Flow
+
+Let us examine the flow of a typical call, using the ActiveRecord adapter for reference.
+
+The call:
+
+<pre class="ruby">
+User.select { |u| u.name == 'Chris' && u.age == 22 }.to_s
+</pre>
+
+The first few steps:
+
+  * @Ambition::API#select@ is called.
+  * An @Ambition::Context@ is created.
+  * An @Ambition::Processors::Select@ is created and added to the context.
+  * The context calls @to_s@ on the new @Select@ processor
+  * The block passed to @select@ is processed.
+  
+This processing is the real meat.  Ambition will instantiate your @Select@ translator and 
+pass values to it, saving the return value of these method calls.
+
+  * @Ambition::Adapters::ActiveRecord::Select@ is instantiated.
+  * The translator's @call@ method is passed @:name@, returning @"users.name"@
+  * The translator's @==@ method is passed @"users.name"@ and @"Chris"@, returning @"users.name = 'Chris'"@
+  * @call@ is passed @:age@, returning @"users.age"@
+  * @==@ is passed @"users.age"@ and @22@, returning @"users.age = 22"@
+  * The translator's @both@ method is passed @"users.name = 'Chris'"@ and @"users.age = 22"@, 
+returning @"(users.name = 'Chris' AND users.age = 22)"@
+
+At this point we leave adapter-land.  The final string is stored in the @clauses@ hash 
+(available to your @Query@) by the context.  The @clauses@ hash is keyed by the translator 
+name -- in this case, @:select@.
+  
+  * The context is returned by @Ambition::API#select@.
+  * @to_s@ is called on the context
+  * The context forwards this @to_s@ call to an instance of the adapter's @Query@ class
+  * The ActiveRecord adapter's @to_s@ calls @to_hash@
+  * @to_hash@ uses the @clauses@ hash to build an AR hash
+  * @to_s@ then uses the hash's members to build a SQL string
+
+The final string is then returned:
+
+<pre class="ruby">
+"SELECT * FROM users WHERE (users.name = 'Chris' AND users.age = 22)"
+</pre>
