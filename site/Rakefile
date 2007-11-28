@@ -1,0 +1,51 @@
+require 'rubygems'
+require 'redcloth'
+require 'rake'
+require 'rake/contrib/sshpublisher'
+
+task :default => [ :clean, :build ]
+
+desc "Clean generated files"
+task :clean do
+  FileUtils.rm_rf 'live'
+end
+
+def compile(file)
+  textile = File.read(file)
+  layout = File.read('src/layout.textile')
+  layout.sub('CONTENT', RedCloth.new(textile).to_html).gsub('PAGE', File.basename(file).split('.').first)
+end
+
+desc "Build live HTML files"
+task :build do
+  FileUtils.mkdir_p 'live/textile'
+  Dir['src/*.textile'].each do |file|
+    next if File.basename(file) == 'layout.textile'
+
+    file_name = File.basename(file).sub('.textile', '.html')
+    live_file = "live/#{file_name}"
+
+    unless uptodate?(live_file, file) && uptodate?(live_file, "src/layout.textile")
+      File.new(live_file, 'w').write(compile(file)) 
+      puts "created #{live_file}"
+      cp file, 'live/textile/' + file.split('/').last.sub('.textile', '.txt')
+    end
+  end
+
+  Dir['src/*.{png,gif,jpeg,jpg,css}'].each do |file|
+    file = File.basename(file)
+    src, live = "src/#{file}", "live/#{file}"
+    unless uptodate? live, src
+      cp src, live 
+      puts "copied #{file}"
+    end
+  end
+end
+
+desc "Publish the documentation"
+task :publish => [ :build ] do
+Rake::SshDirPublisher.new(
+  "defunkt@rubyforge.org",
+  "/var/www/gforge-projects/ambition/",
+  "live" ).upload
+end

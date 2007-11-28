@@ -1,0 +1,23 @@
+h2. Translators
+
+Translators are classes which do the dirty work of converting
+raw Ruby code into Strings for your adapter.  As we've been
+referencing the ActiveRecord adapter, let's look at Translators
+in that context:
+
+  * Select
+  * Sort
+  * Slice
+
+h2. Another Section Header
+
+Pointless text.
+
+Some more pointless text.
+Oh, and here is some code:
+
+<pre>
+def method(*args)
+  puts args.inspect
+end
+</pre>

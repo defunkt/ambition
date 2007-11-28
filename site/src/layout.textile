@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Ruby's Ambition</title>
+  <link href="hubris.css" media="screen" rel="Stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div id="main">
+    <div id="header">
+      <h1><span class="a">A</span>mbition</h1>
+      <code id="nav">
+        $ gem install ambition
+      </code>
+    </div>
+
+    <div id="body">
+      CONTENT
+    </div>
+
+    <div id="footer">
+      <a href="" target="_top">back to top</a>
+      | <a href="http://rubyforge.org/projects/ambition/">rubyforge</a>
+      | <a href="http://groups.google.com/groups/ambitionrb/">the list</a>
+    </div>
+  </div>
+</body>
+</html>
