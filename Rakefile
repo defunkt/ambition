@@ -32,7 +32,7 @@ begin
     p.dependencies << 'ruby2ruby =1.1.7'
     p.dependencies << 'activerecord >=1.15.0'
     p.test_pattern = 'test/*_test.rb'
-    p.ignore_pattern = ['.git', 'site', 'adapters']
+    p.ignore_pattern = /^(\.git|site|adapters).+/
   end
 
 rescue LoadError 
