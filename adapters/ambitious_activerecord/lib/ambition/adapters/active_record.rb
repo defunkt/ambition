@@ -1,3 +1,4 @@
+require 'ambition'
 require 'active_record'
 require 'ambition/adapters/active_record/query'
 require 'ambition/adapters/active_record/base'
