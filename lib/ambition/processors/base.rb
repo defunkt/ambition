@@ -93,11 +93,11 @@ module Ambition
         eval variable, @block
       end
 
-      def new_api_instance
-        self.class.new_api_instance(@context)
+      def translator
+        @translator ||= self.class.translator(@context)
       end
 
-      def self.new_api_instance(context, name = nil)
+      def self.translator(context, name = nil)
         name   ||= self.name.split('::').last
         klass    = context.owner.ambition_adapter.const_get(name)
         instance = klass.new

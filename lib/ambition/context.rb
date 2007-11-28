@@ -35,7 +35,7 @@ module Ambition
     end
 
     def adapter_query
-      Processors::Base.new_api_instance(self, :Query)
+      Processors::Base.translator(self, :Query)
     end
 
     def to_hash

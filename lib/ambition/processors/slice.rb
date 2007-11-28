@@ -5,11 +5,10 @@ module Ambition
         @context = context
         @start   = start
         @length  = length
-        @slicer  = new_api_instance
       end
 
       def to_s
-        @slicer.slice(@start, @length)
+        translator.slice(@start, @length)
       end
     end
   end

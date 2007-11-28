@@ -4,7 +4,6 @@ module Ambition
       def initialize(context, block)
         @context  = context
         @block    = block
-        @selector = new_api_instance
       end
 
       def process_call(args)
@@ -25,18 +24,18 @@ module Ambition
             right = process(right)
           end
 
-          @selector.send(process_operator(operator), process(left), right)
+          translator.send(process_operator(operator), process(left), right)
 
         # Property of passed arg:
         #   [[:dvar, :m], :name]
         elsif args.first.last == @receiver
-          @selector.call(*args[1..-1])
+          translator.call(*args[1..-1])
 
         # Method call: 
         #   [[:call, [:dvar, :m], :name], :upcase]
         elsif args.first.first == :call && args.first[1].last == @receiver
           receiver, method = args
-          @selector.chained_call(receiver.last, method)
+          translator.chained_call(receiver.last, method)
 
         # Deep, chained call:
         #   [[:call, [:call, [:call, [:dvar, :m], :created_at], :something], :else], :perhaps]
@@ -49,7 +48,7 @@ module Ambition
             calls << args.pop
           end
 
-          @selector.chained_call(*calls.reverse)
+          translator.chained_call(*calls.reverse)
 
         else
           raise args.inspect
@@ -76,7 +75,7 @@ module Ambition
           expressions << process(expression)
         end
 
-        @selector.send(with, *expressions)
+        translator.send(with, *expressions)
       end
 
       def process_not(args)
