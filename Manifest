@@ -14,10 +14,6 @@ app_generators/ambition_adapter/templates/test/index_test.rb.erb
 app_generators/ambition_adapter/templates/test/select_test.rb.erb
 app_generators/ambition_adapter/USAGE
 bin/ambition_adapter
-lib/ambition/adapters/active_ldap/base.rb
-lib/ambition/adapters/active_ldap/query.rb
-lib/ambition/adapters/active_ldap/select.rb
-lib/ambition/adapters/active_ldap.rb
 lib/ambition/api.rb
 lib/ambition/context.rb
 lib/ambition/core_ext.rb
@@ -30,10 +26,6 @@ lib/ambition/processors/sort.rb
 lib/ambition.rb
 Manifest
 README
-test/adapters/active_ldap/enumerable_test.rb
-test/adapters/active_ldap/helper.rb
-test/adapters/active_ldap/integration_test.rb
-test/adapters/active_ldap/select_test.rb
 test/adapters/exemplar/association_test.rb
 test/adapters/exemplar/count_test.rb
 test/adapters/exemplar/detect_test.rb

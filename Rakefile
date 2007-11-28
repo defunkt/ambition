@@ -22,16 +22,17 @@ begin
   require 'echoe'
 
   Echoe.new('ambition', Version) do |p|
-    p.project = 'err'
+    p.project        = 'err'
     p.summary        = "Ambition builds yer API calls from plain jane Ruby."
     p.description    = "Ambition builds yer API calls from plain jane Ruby."
     p.url            = "http://errtheblog.com/"
     p.author         = 'Chris Wanstrath'
     p.email          = "chris@ozmm.org"
-    p.dependencies << 'ParseTree =2.0.1'
-    p.dependencies << 'ruby2ruby =1.1.7'
-    p.test_pattern = 'test/*_test.rb'
+    p.ruby_version   = '>= 1.8.6'
     p.ignore_pattern = /^(\.git|site|adapters).+/
+    p.test_pattern   = 'test/*_test.rb'
+    p.dependencies  << 'ParseTree =2.0.1'
+    p.dependencies  << 'ruby2ruby =1.1.7'
   end
 
 rescue LoadError 
