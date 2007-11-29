@@ -35,7 +35,7 @@ task :build do
     live_file = "live/#{file_name}"
 
     unless uptodate?(live_file, file) && uptodate?(live_file, "src/layout.textile")
-      File.new(live_file, 'w').write(compile(file)) 
+      File.new(live_file, 'w') { |f| f.puts(compile(file)); f.flush }
       puts "created #{live_file}"
       cp file, 'live/textile/' + file.split('/').last.sub('.textile', '.txt')
     end

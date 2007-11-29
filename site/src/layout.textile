@@ -15,7 +15,7 @@
     <div id="header">
       <h1><span class="a">A</span>mbition</h1>
       <div id="nav">
-        <a href="/index.html"><span class="a">o</span>verview</a>
+        <a href="/"><span class="a">o</span>verview</a>
         &#183; <a href="/adapters.html"><span class="a">a</span>dapters</a>
         &#183; <a href="/api.html"><span class="a">a</span>pi</a>
       </div>
