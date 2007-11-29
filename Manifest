@@ -23,6 +23,7 @@ lib/ambition/processors/select.rb
 lib/ambition/processors/slice.rb
 lib/ambition/processors/sort.rb
 lib/ambition.rb
+LICENSE
 Manifest
 README
 test/adapters/exemplar/association_test.rb

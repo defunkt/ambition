@@ -113,9 +113,7 @@ pre {
 .ruby .brackets {	
   color: #777;
 }
-.ruby .symbol { 
-  color: #00fb79;
-}
+
 .ruby .regex { 
   color: #37ffff;
 }
