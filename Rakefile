@@ -33,6 +33,7 @@ begin
     p.test_pattern   = 'test/*_test.rb'
     p.dependencies  << 'ParseTree =2.0.1'
     p.dependencies  << 'ruby2ruby =1.1.7'
+    p.dependencies  << 'rubigen =1.1.1'
   end
 
 rescue LoadError 

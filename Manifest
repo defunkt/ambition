@@ -7,11 +7,10 @@ app_generators/ambition_adapter/templates/lib/slice.rb.erb
 app_generators/ambition_adapter/templates/lib/sort.rb.erb
 app_generators/ambition_adapter/templates/Rakefile
 app_generators/ambition_adapter/templates/README
-app_generators/ambition_adapter/templates/test/association_test.rb.erb
-app_generators/ambition_adapter/templates/test/detect_test.rb.erb
 app_generators/ambition_adapter/templates/test/helper.rb.erb
-app_generators/ambition_adapter/templates/test/index_test.rb.erb
 app_generators/ambition_adapter/templates/test/select_test.rb.erb
+app_generators/ambition_adapter/templates/test/slice_test.rb.erb
+app_generators/ambition_adapter/templates/test/sort_test.rb.erb
 app_generators/ambition_adapter/USAGE
 bin/ambition_adapter
 lib/ambition/api.rb
