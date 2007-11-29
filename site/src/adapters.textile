@@ -20,7 +20,7 @@ Here's how the ActiveRecord adapter maps translator classes to SQL clauses:
   * @Slice@ =&gt; @LIMIT@ and @OFFSET@
   * @Sort@ =&gt; @ORDER BY@
 
-Your translators and Query have three special methods available to them at all time:
+Your translators and the Query have three special methods available at all times:
 
   * @owner@
   * @clauses@
