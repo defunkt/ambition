@@ -107,14 +107,8 @@ pre {
   margin-top: 15px;
 }
 
-.ruby .comment {
-  color: #00ffff;
-}
 .ruby .string {
   color: #ff0000;
-}
-.ruby .keywords {
-  color: #f800f2;
 }
 .ruby .brackets {	
   color: #777;
@@ -125,13 +119,10 @@ pre {
 .ruby .regex { 
   color: #37ffff;
 }
-.ruby .expression {
-  color: #fff800;
-}
 
 .normal {}
-.comment { color: #005; font-style: italic; }
-.keyword { color: #C71585; font-weight: bold; }
+.comment { color: #9900FF; }
+.keywords, .expression { color: #C71585; font-weight: bold; }
 .method { color: #077; }
 .class { color: #074; }
 .module { color: #050; }

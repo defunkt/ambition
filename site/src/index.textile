@@ -6,13 +6,13 @@ and love.
 
 Imagine *A*mbition.  
 
-<pre class="ruby">
+<ruby>
 >> LDAP::User.select { |m| m.name == 'jon' && m.age == 21 }.to_s
 => "(&(name=jon)(age=21))" 
 
 >> SQL::User.select { |m| m.name == 'jon' && m.age == 21 }.to_s
 => "SELECT * FROM users WHERE users.name = 'jon' AND users.age = 21"
-</pre>
+</ruby>
 
 It "started":http://errtheblog.com/post/10722 with SQL, but it's become so much more.  
 

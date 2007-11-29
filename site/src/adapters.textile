@@ -22,17 +22,17 @@ Here's how the ActiveRecord adapter maps translator classes to SQL clauses:
 A straightforward translator/query API reference can be found on the "api":api.html page,
 but for now here's an example of a method on the @Select@ translator:
 
-<pre class="ruby">
+<ruby>
 def both(left, right)
   "(#{left} AND #{right})"
 end
-</pre>
+</ruby>
 
 This method represents a @&&@ call.  We might imagine that the following code:
 
-<pre class="ruby">
+<ruby>
 1 && 'two'
-</pre>
+</ruby>
 
 will result in @both@ being called with @1@ and @'two'@, returning @(1 and two)@.
 
@@ -44,9 +44,9 @@ Let us examine the flow of a typical call, using the ActiveRecord adapter for re
 
 The call:
 
-<pre class="ruby">
+<ruby>
 User.select { |u| u.name == 'Chris' && u.age == 22 }.to_s
-</pre>
+</ruby>
 
 The first few steps:
 
@@ -80,6 +80,6 @@ name -- in this case, @:select@.
 
 The final string is then returned:
 
-<pre class="ruby">
+<ruby>
 "SELECT * FROM users WHERE (users.name = 'Chris' AND users.age = 22)"
-</pre>
+</ruby>

@@ -2,4 +2,35 @@ h2. The API
 
 If you haven't yet read the "adapters":adapters.html page, now is the perfect time.
 
+These methods are king:
+
+  * owner
+  * clauses
+  * stash
+
+@owner@ is the class from which the request was generated.
+
+<ruby>
+User.select { |u| u.name == 'Pork' }
+# => owner == User
+</ruby>
+
+@clauses@ is the hash of translated arrays, keyed by processors
+
+<ruby>
+User.select { |u| u.name == 'Pork' }
+# => clauses ==  { :select => [ "users.name = 'Pork'" ] }
+</ruby>
+
+@stash@ is your personal private stash.  A hash you can use for
+keeping stuff around.
+
+<ruby>
+User.select { |u| u.profile.name == 'Pork' }
+# => stash == { :include => [ :profile ] }
+</ruby>
+
+The above is totally arbitrary.  It's basically a way for your
+translators to talk to each other and, more importantly, to the Query
+object.
 
