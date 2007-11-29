@@ -15,6 +15,7 @@ as you're riding ActiveRecord.
 Now require it in your app:
 
 <pre>
+require 'rubygems'
 require 'ambition/adapters/activerecord'
 </pre>
 
