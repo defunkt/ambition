@@ -12,6 +12,12 @@ This will suck in the adapter and its dependencies (ActiveRecord & Ambition).
 It's fully usable outside of Rails (I use it in a Camping app or two), as long
 as you're riding ActiveRecord.
 
+Now require it in your app:
+
+<pre>
+require 'ambition/adapters/activerecord'
+</pre>
+
 h2. Examples
 
 Basically, you write your SQL in Ruby.  No, not in Ruby.  As Ruby.
