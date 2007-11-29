@@ -9,7 +9,7 @@ begin
   require 'echoe'
 
   Echoe.new('ambitious-<%= adapter_name %>') do |p|
-    #p.dependencies  << 'activerecord >=1.15.0'
+    p.dependencies  << '<%= adapter_name %> >=1.0'
     p.summary        = "An ambitious adapter for <%= adapter_module %>"
     p.author         = 'Your Name'
     p.email          = "your@email.com"

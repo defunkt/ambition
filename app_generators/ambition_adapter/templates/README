@@ -1,5 +1,5 @@
-An Ambitious <%= adapter_module %> Adapter
-===========================================
+<%= string = "An Ambitious #{adapter_module} Adapter" %>
+<%= '=' * string.size %>
 
 More information on Ambition:
 -> http://ambition.rubyforge.org
