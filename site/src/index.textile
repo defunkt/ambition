@@ -35,11 +35,9 @@ Most of what they describe has become the @ambitious-activerecord@ gem.
 
 h2. Ambitious Adapters
 
-There are a few adapters in development or released.  
-
 %INCLUDE _adapters.textile%
 
-For more information on adapters, hit up the "adapters":adapters.html page.
+For information on authoring adapters, hit up the "adapters":adapters.html page.
 
 h2. Development
 

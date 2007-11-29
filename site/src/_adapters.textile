@@ -1,3 +1,20 @@
+Adapters are gems named @ambitious-something@, where _something_ corresponds to the data
+store they are adapting.  They can be required in code via @ambition/adapters/something@.
+
+To install and test the ActiveRecord adapter:
+
+<pre>
+$ gem install ambitious-activerecord
+$ irb 
+>> require 'rubygems'
+>> require 'ambition/adapters/activerecord'
+</pre>
+
+Adapters typically inject themselves into their target automatically, so that should be
+all you need.
+
+There are a few adapters in development or released currently:
+
   * "ActiveRecord":adapters/activerecord.html
   * ActiveLDAP
   * Facebook

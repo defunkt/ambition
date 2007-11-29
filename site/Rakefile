@@ -20,7 +20,7 @@ end
 
 def compile_without_layout(file)
   textile = File.read(file).
-    gsub(/%INCLUDE (.+)%/) { |match| compile_without_layout("src/#{$1}") }.
+    gsub(/%INCLUDE (.+)%/) { |match| File.read("src/#{$1}") }.
     gsub('<ruby>', '<pre class="ruby">').gsub('</ruby>', '</pre>')
   RedCloth.new(textile).to_html
 end

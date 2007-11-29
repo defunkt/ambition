@@ -1,36 +1,105 @@
-h2. The API
+h2. Ambition::API
 
-If you haven't yet read the "adapters":adapters.html page, now is the perfect time.
+Your data store target (e.g. @ActiveRecord@) is extended or injected with this
+module.
 
-These methods are king:
+h3. Processors
 
-  * owner
-  * clauses
-  * stash
+These methods do not fire off a query and can be chained.  They return a @Context@
+object which can be inspected or kicked.
 
-@owner@ is the class from which the request was generated.
+  * @select@
+  * @sort_by@
+  * @slice@
+  * @first@(length)
+  
+h3. Kickers
 
-<ruby>
-User.select { |u| u.name == 'Pork' }
-# => owner == User
-</ruby>
+Kickers cause a query to execute.  All method calls on a context are accumulated
+until kicked, at which point they're turned into a query and run.
 
-@clauses@ is the hash of translated arrays, keyed by processors
+  * @entries@
+  * @to_a@  
+  * @detect@
+  * @first@ (no arguments)
+  * @size@
 
-<ruby>
-User.select { |u| u.name == 'Pork' }
-# => clauses ==  { :select => [ "users.name = 'Pork'" ] }
-</ruby>
+h3. Custom Enumerables
 
-@stash@ is your personal private stash.  A hash you can use for
-keeping stuff around.
+These @Enumerable@ methods are written special for Ambition.  Other @Enumerable@
+methods, like @each_with_index@, should work out of the box as they mostly wrap
+@each@.
 
-<ruby>
-User.select { |u| u.profile.name == 'Pork' }
-# => stash == { :include => [ :profile ] }
-</ruby>
+  * @each@
+  * @any?@
+  * @all?@
+  * @empty?@
 
-The above is totally arbitrary.  It's basically a way for your
-translators to talk to each other and, more importantly, to the Query
-object.
+h2. Translators and Query
 
+Methods available to translator and Query instance methods:
+
+  * @owner@   - constant, adapter target
+  * @clauses@ - hash, keyed by translator name
+  * @stash@   - hash, arbitrary
+
+h2. Ambition::Adapters::YourAdapter::Select
+
+All translators are instantiated and have access to @owner@ and @stash@.  They should not 
+touch @clauses@ directly.
+
+  * @call@ - passed a symbol. e.g. @call(:name)@
+  * @chained_call@ - passed an array of symbols. e.g. @call(:name, :downcase)@
+  * @include?@ - passed the array it's called on and the argument.
+
+The following methods are passed the left and right side of the expression they represent.
+
+  * @both@ - &&
+  * @either@ - ||
+  * @not_equal@ - !=
+  * @not_regexp@ - !~
+  * @==@
+  * @=~@
+  * @<@
+  * @<=@  
+  * @>@
+  * @>=@  
+
+h2. Ambition::Adapters::YourAdapter::Slice
+
+All translators are instantiated and have access to @owner@ and @stash@.  They should not 
+touch @clauses@ directly.
+
+The @Slice@ translator has only one method: @slice@(start, length)
+
+Some examples:
+
+  * @first(5)@ becomes @slice(0, 5)@
+  * @first@ becomes @slice(0, 1)@
+  * @User[10, 20]@ becomes @slice(10, 20)@
+  * @User[10..20]@ becomes @slice(10, 10)@
+
+h2. Ambition::Adapters::YourAdapter::Sort
+
+All translators are instantiated and have access to @owner@ and @stash@.  They should not 
+touch @clauses@ directly.
+
+  * @sort_by@ - passed a symbol
+  * @reverse_sort_by@ - passed a symbol
+  * @chained_sort_by@ - passed an array of symbols
+  * @chained_reverse_sort_by@ - passed an array of symbols
+  * @to_proc@ - passed a symbol
+  * @rand@
+
+h2. Ambition::Adapters::YourAdapter::Query
+
+The Query is instantiated and has access to @owner@, @clauses@, and @stash@.  It should
+use the information these methods provide to build its domain specific query.
+
+When any of the following methods are called on a @Context@ they are forwarded to the Query
+instance.
+
+  * kick - the API's kickers call this
+  * size
+  * to_hash
+  * to_s
