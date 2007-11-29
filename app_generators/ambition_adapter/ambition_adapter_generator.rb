@@ -44,7 +44,7 @@ class AmbitionAdapterGenerator < RubiGen::Base
       # Normal files
       files = %w( README Rakefile )
       files.each do |file|
-        m.file file, file
+        m.template file, file
       end
     end
   end

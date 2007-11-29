@@ -27,5 +27,5 @@ end
 
 desc 'Install as a gem'
 task :install_gem do
-  puts `rake package && gem install pkg/ambitious-<%= adapter_name %>-#{Version}.gem`
+  puts `rake manifest package && gem install pkg/ambitious-<%= adapter_name %>-#{Version}.gem`
 end

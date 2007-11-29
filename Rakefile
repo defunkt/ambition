@@ -80,5 +80,5 @@ end
 
 desc 'Install as a gem'
 task :install_gem do
-  puts `rake package && gem install pkg/ambition-#{Version}.gem`
+  puts `rake manifest package && gem install pkg/ambition-#{Version}.gem`
 end
