@@ -8,6 +8,7 @@ class AmbitionAdapterGenerator < RubiGen::Base
     super
     usage if args.empty?
     @destination_root = File.expand_path(args.shift)
+    base_name         = self.base_name.sub(/ambitious(-|_)/,'')
     @adapter_name     = base_name
     @adapter_module   = base_name.split('_').map { |part| part[0] = part[0...1].upcase; part }.join
     extract_options

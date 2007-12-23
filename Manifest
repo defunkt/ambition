@@ -5,6 +5,7 @@ app_generators/ambition_adapter/templates/lib/query.rb.erb
 app_generators/ambition_adapter/templates/lib/select.rb.erb
 app_generators/ambition_adapter/templates/lib/slice.rb.erb
 app_generators/ambition_adapter/templates/lib/sort.rb.erb
+app_generators/ambition_adapter/templates/LICENSE
 app_generators/ambition_adapter/templates/Rakefile
 app_generators/ambition_adapter/templates/README
 app_generators/ambition_adapter/templates/test/helper.rb.erb
