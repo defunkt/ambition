@@ -5,7 +5,7 @@ require 'rake/rdoctask'
 Version = '0.5.0'
 
 module Rake::TaskManager
-  def delete_task(task_class, args, &block)
+  def delete_task(task_class, *args, &block)
     task_name, deps = resolve_args(args)
     @tasks.delete(task_class.scope_name(@scope, task_name).to_s)
   end
