@@ -31,7 +31,7 @@ context "<%= adapter_module %> Adapter :: Sort" do
     string.should == "foo"
   end
 
-  xxspecify "reverse order with #reverse" do
+  xspecify "reverse order with #reverse" do
     # TODO: not implemented
     string = @block.sort_by { |m| m.age }.reverse.to_s
     string.should == "foo"
