@@ -16,7 +16,7 @@ Now require it in your app:
 
 <pre>
 require 'rubygems'
-require 'ambition/adapters/activerecord'
+require 'ambition/adapters/active_record'
 </pre>
 
 h2. Examples

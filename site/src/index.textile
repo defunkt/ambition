@@ -44,4 +44,4 @@ h2. Development
 Development discussion happens in the "Google Group":http://groups.google.com/group/ambition-rb.  
 Stay up to date by following Chris' git repository:
 
-@git clone git://errtheblog.com/git/ambition@
+@git clone git://github.com/defunkt/ambition@

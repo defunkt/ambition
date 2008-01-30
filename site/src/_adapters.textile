@@ -7,7 +7,7 @@ To install and test the ActiveRecord adapter:
 $ gem install ambitious-activerecord
 $ irb 
 >> require 'rubygems'
->> require 'ambition/adapters/activerecord'
+>> require 'ambition/adapters/active_record'
 </pre>
 
 Adapters typically inject themselves into their target automatically, so that should be
