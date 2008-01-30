@@ -29,7 +29,7 @@ class AmbitionAdapterGenerator < RubiGen::Base
       adapter_path = "lib/ambition/adapters/#{adapter_name}"
 
       %w( base query select slice sort ).each do |file|
-        m.template "lib/#{file}.rb.erb", "#{adapter_path}/#{file}.rb"
+        m.template "lib/adapter/#{file}.rb.erb", "#{adapter_path}/#{file}.rb"
       end
 
       m.template 'lib/init.rb.erb', "#{adapter_path}.rb"
@@ -52,7 +52,7 @@ class AmbitionAdapterGenerator < RubiGen::Base
 
 protected
   def banner
-    "Coming soon"
+    "Usage: ambition_adapter adapter_name"
   end
 
   def add_options!(opts)
