@@ -52,6 +52,16 @@ context "Different types" do
     sql.should == "SELECT * FROM users WHERE users.name IS NOT NULL"
   end
 
+  specify "nil?" do
+    sql = User.select { |m| m.name.nil? }.to_s
+    sql.should == "SELECT * FROM users WHERE users.name IS NULL"
+  end
+
+  specify "!nil?" do
+    sql = User.select { |m| !m.name.nil? }.to_s
+    sql.should == "SELECT * FROM users WHERE users.name IS NOT NULL"
+  end
+
   specify "Time" do
     sql = User.select { |m| m.name == Time.now }.to_s
     sql.should == "SELECT * FROM users WHERE users.name = '#{Time.now.to_s(:db)}'"
