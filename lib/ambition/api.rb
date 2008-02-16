@@ -37,7 +37,7 @@ module Ambition
 
     def first(count = 1)
       sliced = slice(0, count)
-      count == 1 ? sliced.kick : sliced
+      count == 1 ? sliced.kick.first : sliced
     end
 
     def each(&block)
