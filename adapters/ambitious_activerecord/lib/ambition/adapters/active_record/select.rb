@@ -83,7 +83,7 @@ module Ambition
 
         def nil?(column)
           left = "#{owner.table_name}.#{quote_column_name column}"
-          @negated ? not_equal(left, nil) : self.==(left, nil)
+          negated? ? not_equal(left, nil) : self.==(left, nil)
         end
 
         def downcase(column)
