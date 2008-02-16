@@ -108,6 +108,7 @@ module Ambition
             def owner;    @context.owner   end
             def clauses;  @context.clauses end
             def stash;    @context.stash   end
+            def negated?; @negated         end
           end
         end
 
