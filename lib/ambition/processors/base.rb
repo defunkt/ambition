@@ -104,7 +104,7 @@ module Ambition
 
         unless instance.respond_to? :context
           klass.class_eval do
-            attr_accessor :context
+            attr_accessor :context, :negated
             def owner;    @context.owner   end
             def clauses;  @context.clauses end
             def stash;    @context.stash   end

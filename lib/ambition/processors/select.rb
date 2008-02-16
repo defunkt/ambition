@@ -95,10 +95,10 @@ module Ambition
       end
 
       def negate
-        @negated = true
+        @negated = translator.negated = true
         yield
       ensure
-        @negated = false
+        @negated = translator.negated = false
       end
     end
   end
