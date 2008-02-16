@@ -1,6 +1,6 @@
 require 'rake'
 
-Version = '0.1.0'
+Version = '0.1.1'
 
 begin
   require 'rubygems'
@@ -18,7 +18,7 @@ begin
     p.url            = "http://ambition.rubyforge.org/"
     p.test_pattern   = 'test/*_test.rb'
     p.version        = Version
-    p.dependencies  << 'ambition >=0.5.0'
+    p.dependencies  << 'ambition >=0.5.1'
   end
 
 rescue LoadError 
