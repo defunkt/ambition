@@ -1,6 +1,6 @@
 unless defined? Test
   $:.unshift File.dirname(__FILE__) + '/../../../lib'
-  %w( rubygems ambition ambition/adapters/active_record benchmark ).each { |f| require f }
+  %w( rubygems ambition/adapters/active_record benchmark ).each { |f| require f }
 
   class User < ActiveRecord::Base
     def self.reflections
