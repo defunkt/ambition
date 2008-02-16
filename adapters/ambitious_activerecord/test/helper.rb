@@ -25,6 +25,10 @@ end
 module ActiveRecord
   module ConnectionAdapters
     class MysqlAdapter  
+      def initialize(*args)
+        super
+      end
+
       def connect(*args)
         true
       end
