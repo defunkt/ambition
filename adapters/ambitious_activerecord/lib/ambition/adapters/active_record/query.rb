@@ -24,11 +24,11 @@ module Ambition
             hash[:order] = order.join(', ')
           end
 
-          if clauses[:slice].last =~ /LIMIT (\d+)/
+          if Array(clauses[:slice]).last =~ /LIMIT (\d+)/
             hash[:limit] = $1.to_i
           end
 
-          if clauses[:slice].last =~ /OFFSET (\d+)/
+          if Array(clauses[:slice]).last =~ /OFFSET (\d+)/
             hash[:offset] = $1.to_i
           end
 
