@@ -1,3 +1,5 @@
+require 'ruby2ruby'
+
 module Ambition
   module Processors
     class Ruby < RubyToRuby

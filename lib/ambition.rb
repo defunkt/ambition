@@ -2,6 +2,7 @@ require 'ambition/enumerable'
 require 'ambition/api'
 require 'ambition/context'
 require 'ambition/core_ext'
+require 'ambition/sexp_translator'
 
 require 'ambition/processors/base'
 require 'ambition/processors/select'

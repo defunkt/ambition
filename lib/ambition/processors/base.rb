@@ -82,7 +82,7 @@ module Ambition
       ##
       # Helper methods
       def to_s
-        process @block.to_sexp
+        process SexpTranslator.translate(@block)
       end
 
       def key
