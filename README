@@ -1,10 +1,24 @@
-Ambition
-========
+= Ambition
 
-http://github.com/defunkt/ambition
+
+== Get it
+
+
 
 $ git clone git://github.com/defunkt/ambition.git
 
+== Resources
+
+ * http://ambition.rubyforge.org/
+ * http://groups.google.com/group/ambition-rb/
+ * http://errtheblog.com/posts/63-full-of-ambition
+ * http://errtheblog.com/posts/82-adapting-ambitiously
+ * http://errtheblog.com/posts/86-sugary-adapters
+ * http://errtheblog.com/posts/64-even-more-ambitious
+
+
+
+== Author
 
 Chris Wanstrath
 chris@ozmm.org
