@@ -93,15 +93,26 @@ module Ambition #:nodoc:
         eval variable, @block
       end
 
+      # Gives you the current translator. Uses +self.translator+ to look it up,
+      # if it isn't known yet.
       def translator
         @translator ||= self.class.translator(@context)
       end
 
       def self.translator(context, name = nil)
+        # Grok the adapter name
         name   ||= self.name.split('::').last
+        # Get the module for it
         klass    = context.owner.ambition_adapter.const_get(name)
         instance = klass.new
 
+        # Make sure that the instance has everything it will need:
+        #
+        # * context
+        # * owner
+        # * clauses
+        # * stash
+        # * negated?
         unless instance.respond_to? :context
           klass.class_eval do
             attr_accessor :context, :negated
