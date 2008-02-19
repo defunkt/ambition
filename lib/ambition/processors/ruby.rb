@@ -1,7 +1,7 @@
 require 'ruby2ruby'
 
-module Ambition
-  module Processors
+module Ambition #:nodoc:
+  module Processors #:nodoc:
     class Ruby < RubyToRuby
       def self.process(node)
         @processor ||= new

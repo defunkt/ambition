@@ -1,4 +1,4 @@
-module Ambition
+module Ambition #:nodoc:
   class Context
     undef_method :to_s
     include API

@@ -1,4 +1,4 @@
-module Ambition
+module Ambition #:nodoc:
   module API
     include Enumerable
 

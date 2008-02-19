@@ -1,6 +1,6 @@
 require 'parse_tree'
 
-module Ambition
+module Ambition #:nodoc:
   class SexpTranslator
     @@block_cache = {}
 

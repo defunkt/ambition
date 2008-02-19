@@ -1,5 +1,5 @@
-module Ambition
-  module Processors
+module Ambition #:nodoc:
+  module Processors #:nodoc:
     class Base
       ##
       # Processing methods
