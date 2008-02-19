@@ -1,23 +1,32 @@
 module Ambition #:nodoc:
+  # This class includes several methods you will likely want to be accessing through your
+  # Query and Translator classes:
+  #
+  # * +clauses+
+  # * +owner+
+  # * +stash+
   class Context
     undef_method :to_s
     include API
-
-    ##
-    # These are the methods your Query and Translator classes will 
-    # want to access.
+    
+    # A hash of arrays, one key per processor.
+    # So, if someone called User.select, your
+    # +clauses+ hash would have a :select key with
+    # an array of translated strings via your Select
+    # class.
+    # 
+    # This is accessible from your Query and Translator classes.
+    attr_reader :clauses
+    
+    # The class everything was called on.  Like `User`
     #
-    #   +owner+   The class everything was called on.  Like `User' 
+    # This is accessible from your Query and Translator classes.
+    attr_reader :owner
+    
+    # A place for you to stick stuff.  Available to all Translators and your Query class.
     #
-    #   +clauses+ A hash of arrays, one key per processor.
-    #             So, if someone called User.select, your
-    #             +clauses+ hash would have a :select key with
-    #             an array of translated strings via your Select
-    #             class.
-    #
-    #   +stash+   A place for you to stick stuff.  Available to
-    #             all Translators and your Query class.
-    attr_reader :clauses, :owner, :stash
+    # This is accessible from your Query and Translator classes.
+    attr_reader :stash
 
     def initialize(owner)
       @owner   = owner
