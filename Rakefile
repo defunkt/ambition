@@ -67,7 +67,7 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.add(files)
   rdoc.main     = "README" 
   rdoc.title    = "ambition"
-  rdoc.template = File.exists?(t="/Users/chris/ruby/projects/err/rock/template.rb") ? t : "/var/www/rock/template.rb"
+  # rdoc.template = File.exists?(t="/Users/chris/ruby/projects/err/rock/template.rb") ? t : "/var/www/rock/template.rb"
   rdoc.rdoc_dir = 'doc' 
   rdoc.options << '--inline-source'
 end
