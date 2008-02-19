@@ -34,10 +34,12 @@ module Ambition #:nodoc:
       @stash   = {}
     end
 
+    # Gets the ambition_context. From a Ambition::Context, this is actually +self+.
     def ambition_context
       self
     end
 
+    # Adds a clause to this context.
     def <<(clause)
       @clauses[clause.key] ||= []
       @clauses[clause.key] << clause.to_s
