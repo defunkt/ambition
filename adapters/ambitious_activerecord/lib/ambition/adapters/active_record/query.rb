@@ -11,6 +11,7 @@ module Ambition
         def size
           owner.count(to_hash)
         end
+        alias_method :length, :size
 
         def to_hash
           hash = {}
