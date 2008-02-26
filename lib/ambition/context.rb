@@ -1,5 +1,6 @@
 module Ambition
   class Context
+    undef_method :to_s
     include API
 
     ##
@@ -38,22 +39,10 @@ module Ambition
       Processors::Base.translator(self, :Query)
     end
 
-    def to_hash
-      adapter_query.to_hash
+    def method_missing(method, *args, &block)
+      return super unless adapter_query.respond_to? method
+      adapter_query.send(method, *args, &block)
     end
-
-    def to_s
-      adapter_query.to_s
-    end
-
-    def kick
-      adapter_query.kick
-    end
-
-    def size
-      adapter_query.size
-    end
-    alias_method :length, :size
 
     def inspect
       "(Query object: call #to_s or #to_hash to inspect, call an Enumerable (such as #each or #first) to request data)"
