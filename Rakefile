@@ -2,7 +2,7 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
-Version = '0.5.1'
+Version = '0.5.2'
 
 module Rake::TaskManager
   def delete_task(task_class, *args, &block)
