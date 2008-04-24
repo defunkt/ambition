@@ -216,7 +216,7 @@ context "ActiveRecord Adapter" do
 
   context "MySQL specific" do
     setup do
-      ActiveRecord::Base.connection = ActiveRecord::ConnectionAdapters::MysqlAdapter.new('connection', 'logger', 'options', 'config')
+      ActiveRecord::Base.connection = ActiveRecord::ConnectionAdapters::MysqlAdapter.new('connection', 'logger')
     end
 
     teardown do
