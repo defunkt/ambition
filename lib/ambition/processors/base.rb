@@ -10,18 +10,13 @@ module Ambition #:nodoc:
       end
 
       def process_dasgn_curr(exp)
-        @receiver = exp.first
-        @receiver.to_s
+        (@receiver = exp.first).to_s
       end
       alias_method :process_dasgn, :process_dasgn_curr
 
       def process_array(exp)
         # Branch on whether this is straight Ruby or a real array
-        if ruby = rubify(exp)
-          ruby
-        else
-          exp.map { |m| process(m) }
-        end
+        rubify(exp) || exp.map { |m| process(m) }
       end
 
       def process_str(exp)
@@ -102,6 +97,7 @@ module Ambition #:nodoc:
       def self.translator(context, name = nil)
         # Grok the adapter name
         name   ||= self.name.split('::').last
+
         # Get the module for it
         klass    = context.owner.ambition_adapter.const_get(name)
         instance = klass.new
