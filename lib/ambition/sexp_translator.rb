@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'parse_tree'
 
 module Ambition #:nodoc:
