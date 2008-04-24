@@ -25,7 +25,7 @@ module Ambition #:nodoc:
     alias_method :to_a, :entries
 
     def size
-      ambition_context.size
+      ambition_context == self ? super : ambition_context.size
     end
 
     def slice(start, length = nil)
@@ -68,7 +68,6 @@ module Ambition #:nodoc:
       size.zero?
     end
 
-
     # Builds a new +Context+.
     def ambition_context
       Context.new(self)
@@ -81,7 +80,6 @@ module Ambition #:nodoc:
       @@ambition_adapter[name] || @@ambition_adapter[parent.name]
     end
 
-    
     # Assign the ambition adapter. Typically, you use this in the toplevel file of your adapter.
     #
     # For example, for ambitious_sphinx, in our lib/ambition/adapters/ambitious_sphinx.rb:
