@@ -23,9 +23,17 @@ begin
 
 rescue LoadError 
   puts "Not doing any of the Echoe gemmy stuff, because you don't have the specified gem versions"
+
+  require 'rake/testtask'
+  Rake::TestTask.new do |t|
+    t.pattern = "test/*_test.rb"
+  end
 end
 
 desc 'Install as a gem'
 task :install_gem do
   puts `rake manifest package && gem install pkg/ambitious-activerecord-#{Version}.gem`
 end
+
+task :default => :test 
+
