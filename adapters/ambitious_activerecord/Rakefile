@@ -1,6 +1,6 @@
 require 'rake'
 
-Version = '0.1.1'
+Version = '0.1.2'
 
 begin
   require 'rubygems'
