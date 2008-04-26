@@ -2,7 +2,7 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
-Version = '0.5.3'
+Version = '0.5.4'
 
 module Rake::TaskManager
   def delete_task(task_class, *args, &block)
@@ -31,8 +31,8 @@ begin
     p.ruby_version   = '>= 1.8.6'
     p.ignore_pattern = /^(\.git|site|adapters).+/
     p.test_pattern   = 'test/*_test.rb'
-    p.dependencies  << 'ParseTree =2.0.1'
-    p.dependencies  << 'ruby2ruby =1.1.7'
+    p.dependencies  << 'ParseTree =2.1.1'
+    p.dependencies  << 'ruby2ruby =1.1.8'
     p.dependencies  << 'rubigen =1.1.1'
   end
 
