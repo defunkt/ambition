@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Ruby's Ambition</title>
+  <link href="/static/hubris.css" media="screen" rel="Stylesheet" type="text/css" />
+  <script src="/static/code_highlighter.js" type="text/javascript"></script>
+  <script src="/static/ruby.js" type="text/javascript"></script>  
+</head>
+
+<body>
+  <div id="main">
+    <div id="header">
+      <h1><span class="a">A</span>mbition</h1>
+      <div id="nav">
+        <a href="/"><span class="a">o</span>verview</a>
+        &#183; <a href="/adapters.html"><span class="a">a</span>dapters</a>
+        &#183; <a href="/api.html"><span class="a">a</span>pi</a>
+      </div>
+    </div>
+
+    <div id="body">
+      <h2>An Ambitious ActiveRecord Adapter</h2>
+
+
+	<p>I could tell you all about how awesome the internals are, or 
+how fun it was to write, or how it&#8217;ll make you rich and famous, 
+but instead I&#8217;m just going to show you some examples.</p>
+
+
+	<h2>Get It</h2>
+
+
+	<p><code>$ sudo gem install ambitious-activerecord</code></p>
+
+
+	<p>This will suck in the adapter and its dependencies (ActiveRecord &#38; Ambition). 
+It&#8217;s fully usable outside of Rails (I use it in a Camping app or two), as long
+as you&#8217;re riding ActiveRecord.</p>
+
+
+	<p>Now require it in your app:</p>
+
+
+<pre>
+require 'rubygems'
+require 'ambition/adapters/active_record'
+</pre>
+
+	<h2>Examples</h2>
+
+
+	<p>Basically, you write your <span class="caps">SQL</span> in Ruby.  No, not in Ruby.  As Ruby.</p>
+
+
+<pre class="ruby">
+User.select { |u| u.city == 'San Francisco' }.each do |user|
+  puts user.name
+end
+</pre>
+
+	<p>And that&#8217;s it.</p>
+
+
+	<p>The key is that queries aren&#8217;t actually run until the data they represent is 
+requested. Usually this is done with what I call a kicker method. You can call them 
+that, too.</p>
+
+
+	<p>Kicker methods are guys like <code>detect</code>, <code>each</code>, <code>each_with_index</code>, <code>map</code>, <code>entries</code>, 
+<code>to_a</code>, and <code>first</code> (with no argument). Methods like <code>select</code>, <code>sort_by</code>, and <code>first</code> 
+(with an argument) are not kicker methods and return a <code>Context</code> object without running any <span class="caps">SQL</span>.</p>
+
+
+	<p>Our <code>Context</code> object has two useful methods: <code>to_s</code> and <code>to_hash</code>.  With these,
+we can check out what exactly we&#8217;re building.  Not everyone has <code>to_s</code>,
+though.  Mostly ignore these methods and treat everything like you normally
+would.</p>
+
+
+	<p>See, <code>to_s</code>:</p>
+
+
+<pre class="ruby">
+&gt;&gt; User.select { |m| m.name == 'jon' }.to_s
+=&gt; "SELECT * FROM users WHERE users.name = 'jon'" 
+</pre>
+
+	<p>See, <code>to_hash</code>:</p>
+
+
+<pre class="ruby">
+&gt;&gt; User.select { |m| m.name == 'jon' }.to_hash
+=&gt; { :conditions =&gt; "users.name = 'jon'" }
+</pre>
+
+	<h2>Equality &#8211; select { |u| u.field  'bob' }</h2>
+
+
+<pre class="ruby">
+User.select { |m| m.name == 'jon' }
+"SELECT * FROM users WHERE users.name = 'jon'" 
+
+User.select { |m| m.created_at &gt; 2.days.ago }
+"SELECT * FROM users WHERE users.created_at &gt; '2007-09-26 20:37:47'" 
+
+User.select { |m| m.name == 'jon' }
+"SELECT * FROM users WHERE users.name = 'jon'" 
+
+User.select { |m| m.name != 'jon' }
+"SELECT * FROM users WHERE users.name &lt;&gt; 'jon'" 
+
+User.select { |m| m.name == 'jon' &#38;&#38; m.age == 21 }
+"SELECT * FROM users WHERE (users.name = 'jon' AND users.age = 21)" 
+
+User.select { |m| m.name == 'jon' || m.age == 21 }
+"SELECT * FROM users WHERE (users.name = 'jon' OR users.age = 21)" 
+
+User.select { |m| m.name == 'jon' || m.age == 21 &#38;&#38; m.password == 'pass' }
+"SELECT * FROM users WHERE 
+ (users.name = 'jon' OR (users.age = 21 AND users.password = 'pass'))" 
+
+User.select { |m| (m.name == 'jon' || m.name == 'rick') &#38;&#38; m.age == 21 }
+"SELECT * FROM users WHERE 
+ ((users.name = 'jon' OR users.name = 'rick') AND users.age = 21)" 
+</pre>
+
+	<h2>Associations &#8211; select { |u| u.field  &#8216;bob&#8217; &#38;&#38; u.association.field == &#8216;bob@bob.com&#8217; }</h2>
+
+
+	<p>The <code>to_s</code> method doesn&#8217;t work on associations yet, but that&#8217;s okay: they can 
+still query through ActiveRecord just fine.</p>
+
+
+<pre class="ruby">
+User.select do |u| 
+  u.email == 'chris@ozmm.org' &#38;&#38; u.profile.name == 'chris wanstrath' 
+end.map(&#38;:title)
+
+"SELECT users.id AS t0_r0, ... FROM users 
+ LEFT OUTER JOIN profiles ON profiles.user_id = users.id 
+ WHERE ((users.email = 'chris@ozmm.org' AND profiles.name = 'chris wanstrath'))" 
+</pre>
+
+	<h2>Comparisons &#8211; select { |u| u.age &gt; 21 }</h2>
+
+
+<pre class="ruby">
+User.select { |m| m.age &gt; 21 }
+"SELECT * FROM users WHERE users.age &gt; 21" 
+
+User.select { |m| m.age &lt; 21 }.to_s
+"SELECT * FROM users WHERE users.age &lt; 21" 
+
+User.select { |m| [1, 2, 3, 4].include? m.id }
+"SELECT * FROM users WHERE users.id IN (1, 2, 3, 4)" 
+</pre>
+
+	<h2><span class="caps">LIKE</span> and <span class="caps">REGEXP</span> (RLIKE) &#8211; select { |m| m.name =~ &#8216;chris&#8217; }</h2>
+
+
+<pre class="ruby">
+User.select { |m| m.name =~ 'chris' }
+"SELECT * FROM users WHERE users.name LIKE 'chris'" 
+
+User.select { |m| m.name =~ 'chri%' }
+"SELECT * FROM users WHERE users.name LIKE 'chri%'" 
+
+User.select { |m| m.name !~ 'chris' }
+"SELECT * FROM users WHERE users.name NOT LIKE 'chris'" 
+
+User.select { |m| !(m.name =~ 'chris') }
+"SELECT * FROM users WHERE users.name NOT LIKE 'chris'" 
+
+User.select { |m| m.name =~ /chris/ }
+"SELECT * FROM users WHERE users.name REGEXP 'chris'" 
+</pre>
+
+	<h2>#detect</h2>
+
+
+<pre class="ruby">
+User.detect { |m| m.name == 'chris' }
+"SELECT * FROM users WHERE users.name = 'chris' LIMIT 1" 
+</pre>
+
+	<h2>LIMITs &#8211; first, first(x), [offset, limit], [range], slice</h2>
+
+
+<pre class="ruby">
+User.select { |m| m.name == 'jon' }.first
+"SELECT * FROM users WHERE users.name = 'jon' LIMIT 1" 
+
+User.select { |m| m.name == 'jon' }.first(5)
+"SELECT * FROM users WHERE users.name = 'jon' LIMIT 5" 
+
+User.select { |m| m.name == 'jon' }[10, 20]
+"SELECT * FROM users WHERE users.name = 'jon' LIMIT 10, 20" 
+
+User.select { |m| m.name == 'jon' }[10..20]
+"SELECT * FROM users WHERE users.name = 'jon' LIMIT 10, 10" 
+</pre>
+
+	<h2><span class="caps">ORDER</span> &#8211; sort_by { |u| u.field }</h2>
+
+
+<pre class="ruby">
+User.select { |m| m.name == 'jon' }.sort_by { |m| m.name }
+"SELECT * FROM users WHERE users.name = 'jon' ORDER BY users.name" 
+
+User.select { |m| m.name == 'jon' }.sort_by { |m| [ m.name,  m.age ] }
+"SELECT * FROM users WHERE users.name = 'jon' ORDER BY users.name, users.age" 
+
+User.select { |m| m.name == 'jon' }.sort_by { |m| [ m.name,  -m.age ] }
+"SELECT * FROM users WHERE users.name = 'jon' 
+ ORDER BY users.name, users.age DESC" 
+
+User.select { |m| m.name == 'jon' }.sort_by { |m| [ -m.name,  -m.age ] }
+"SELECT * FROM users WHERE users.name = 'jon' 
+ ORDER BY users.name DESC, users.age DESC" 
+
+User.select { |m| m.name == 'jon' }.sort_by { |m| -m.age }
+"SELECT * FROM users WHERE users.name = 'jon' ORDER BY users.age DESC" 
+
+User.select { |m| m.name == 'jon' }.sort_by { |m| -m.profiles.title }
+"SELECT users.id AS t0_r0, ... FROM users 
+ LEFT OUTER JOIN profiles ON profiles.user_id = users.id 
+ WHERE (users.name = 'jon') ORDER BY profiles.title DESC" 
+
+User.select { |m| m.name == 'jon' }.sort_by { rand }
+"SELECT * FROM users WHERE users.name = 'jon' ORDER BY RAND()" 
+</pre>
+
+	<h2><span class="caps">COUNT</span> &#8211; select { |u| u.name == &#8216;jon&#8217; }.size</h2>
+
+
+<pre class="ruby">
+User.select { |m| m.name == 'jon' }.size
+"SELECT count(*) AS count_all FROM users WHERE (users.name = 'jon')" 
+
+&gt;&gt; User.select { |m| m.name == 'jon' }.size
+=&gt; 21
+</pre>
+
+	<h2>Other Enumerables</h2>
+
+
+	<p>These methods perform <acronym title="">COUNT</acronym> operations rather than loading your array into memory.  They&#8217;re all 
+kickers.</p>
+
+
+<pre class="ruby">  
+User.any? { |m| m.name == 'jon' }
+User.all? { |m| m.name == 'jon' }
+User.select { |m| m.name == 'jon' }.empty?
+</pre>
+
+	<h2>More Sugar</h2>
+
+
+	<p>The <code>downcase</code> and <code>upcase</code> methods will map to <acronym title="">LOWER</acronym> and <acronym title="">UPPER</acronym>, respectively.</p>
+
+
+<pre class="ruby">
+&gt;&gt; User.select { |m| m.name.downcase =~ 'jon%' }.to_s
+=&gt; "SELECT * FROM users WHERE LOWER(users.name) LIKE 'jon%'" 
+</pre>
+
+	<h2>Quoting</h2>
+
+
+	<p>Columns and values will be quoted using ActiveRecord&#8217;s quote_column_name and quote methods, if
+possible.</p>
+
+
+	<h2><span class="caps">SELECT</span> * <span class="caps">FROM</span> bugs</h2>
+
+
+	<p>Found a bug?  Sweet.  Add it at <a href="http://err.lighthouseapp.com/projects/466-plugins/tickets/new">the Lighthouse</a>.</p>
+
+
+	<p>More information on Ambition:</p>
+
+
+	<ul>
+	<li><a href="http://ambition.rubyforge.org">http://ambition.rubyforge.org</a></li>
+		<li><a href="http://groups.google.com/group/ambition-rb/">http://groups.google.com/group/ambition-rb/</a></li>
+	</ul>
+
+
+	<p>- Chris Wanstrath [ chris@ozmm.org ]</p>
+    </div>
+
+    <div id="footer">
+      <a href="" target="_top">back to top</a>
+      | <a href="http://rubyforge.org/projects/ambition/">rubyforge</a>
+      | <a href="http://groups.google.com/group/ambition-rb/">the list</a>
+    </div>
+  </div>
+</body>
+</html>

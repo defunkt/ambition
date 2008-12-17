@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Ruby's Ambition</title>
+  <link href="/static/hubris.css" media="screen" rel="Stylesheet" type="text/css" />
+  <script src="/static/code_highlighter.js" type="text/javascript"></script>
+  <script src="/static/ruby.js" type="text/javascript"></script>  
+</head>
+
+<body>
+  <div id="main">
+    <div id="header">
+      <h1><span class="a">A</span>mbition</h1>
+      <div id="nav">
+        <a href="/"><span class="a">o</span>verview</a>
+        &#183; <a href="/adapters.html"><span class="a">a</span>dapters</a>
+        &#183; <a href="/api.html"><span class="a">a</span>pi</a>
+      </div>
+    </div>
+
+    <div id="body">
+      <h2>Ambition::API</h2>
+
+
+	<p>Your data store target (e.g. <code>ActiveRecord</code>) is extended or injected with this
+module.</p>
+
+
+	<h3>Processors</h3>
+
+
+	<p>These methods do not fire off a query and can be chained.  They return a <code>Context</code>
+object which can be inspected or kicked.</p>
+
+
+	<ul>
+	<li><code>select</code></li>
+		<li><code>sort_by</code></li>
+		<li><code>slice</code></li>
+		<li><code>first</code>(length)</li>
+	</ul>
+
+
+	<h3>Kickers</h3>
+
+
+	<p>Kickers cause a query to execute.  All method calls on a context are accumulated
+until kicked, at which point they&#8217;re turned into a query and run.</p>
+
+
+	<ul>
+	<li><code>entries</code></li>
+		<li><code>to_a</code>  </li>
+		<li><code>detect</code></li>
+		<li><code>first</code> (no arguments)</li>
+		<li><code>size</code></li>
+	</ul>
+
+
+	<h3>Custom Enumerables</h3>
+
+
+	<p>These <code>Enumerable</code> methods are written special for Ambition.  Other <code>Enumerable</code>
+methods, like <code>each_with_index</code>, should work out of the box as they mostly wrap
+<code>each</code>.</p>
+
+
+	<ul>
+	<li><code>each</code></li>
+		<li><code>any?</code></li>
+		<li><code>all?</code></li>
+		<li><code>empty?</code></li>
+	</ul>
+
+
+	<h2>Translators and Query</h2>
+
+
+	<p>Methods available to translator and Query instance methods:</p>
+
+
+	<ul>
+	<li><code>owner</code>   &#8211; constant, adapter target</li>
+		<li><code>clauses</code> &#8211; hash, keyed by translator name</li>
+		<li><code>stash</code>   &#8211; hash, arbitrary</li>
+	</ul>
+
+
+	<h2>Ambition::Adapters::YourAdapter::Select</h2>
+
+
+	<p>All translators are instantiated and have access to <code>owner</code> and <code>stash</code>.  They should not 
+touch <code>clauses</code> directly.</p>
+
+
+	<ul>
+	<li><code>call</code> &#8211; passed a symbol. e.g. <code>call(:name)</code></li>
+		<li><code>chained_call</code> &#8211; passed an array of symbols. e.g. <code>call(:name, :downcase)</code></li>
+		<li><code>include?</code> &#8211; passed the array it&#8217;s called on and the argument.</li>
+	</ul>
+
+
+	<p>The following methods are passed the left and right side of the expression they represent.</p>
+
+
+	<ul>
+	<li><code>both</code> &#8211; &#38;&#38;</li>
+		<li><code>either</code> &#8211; ||</li>
+		<li><code>not_equal</code> &#8211; !=</li>
+		<li><code>not_regexp</code> &#8211; !~</li>
+		<li><code>==</code></li>
+		<li><code>=~</code></li>
+		<li><code>&lt;</code></li>
+		<li><code>&lt;=</code>  </li>
+		<li><code>&gt;</code></li>
+		<li><code>&gt;=</code></li>
+	</ul>
+
+
+	<h2>Ambition::Adapters::YourAdapter::Slice</h2>
+
+
+	<p>All translators are instantiated and have access to <code>owner</code> and <code>stash</code>.  They should not 
+touch <code>clauses</code> directly.</p>
+
+
+	<p>The <code>Slice</code> translator has only one method: <code>slice</code>(start, length)</p>
+
+
+	<p>Some examples:</p>
+
+
+	<ul>
+	<li><code>first(5)</code> becomes <code>slice(0, 5)</code></li>
+		<li><code>first</code> becomes <code>slice(0, 1)</code></li>
+		<li><code>User[10, 20]</code> becomes <code>slice(10, 20)</code></li>
+		<li><code>User[10..20]</code> becomes <code>slice(10, 10)</code></li>
+	</ul>
+
+
+	<h2>Ambition::Adapters::YourAdapter::Sort</h2>
+
+
+	<p>All translators are instantiated and have access to <code>owner</code> and <code>stash</code>.  They should not 
+touch <code>clauses</code> directly.</p>
+
+
+	<ul>
+	<li><code>sort_by</code> &#8211; passed a symbol</li>
+		<li><code>reverse_sort_by</code> &#8211; passed a symbol</li>
+		<li><code>chained_sort_by</code> &#8211; passed an array of symbols</li>
+		<li><code>chained_reverse_sort_by</code> &#8211; passed an array of symbols</li>
+		<li><code>to_proc</code> &#8211; passed a symbol</li>
+		<li><code>rand</code></li>
+	</ul>
+
+
+	<h2>Ambition::Adapters::YourAdapter::Query</h2>
+
+
+	<p>The Query is instantiated and has access to <code>owner</code>, <code>clauses</code>, and <code>stash</code>.  It should
+use the information these methods provide to build its domain specific query.</p>
+
+
+	<p>When any of the following methods are called on a <code>Context</code> they are forwarded to the Query
+instance.</p>
+
+
+	<ul>
+	<li>kick &#8211; the <span class="caps">API</span>&#8217;s kickers call this</li>
+		<li>size</li>
+		<li>to_hash</li>
+		<li>to_s</li>
+	</ul>
+    </div>
+
+    <div id="footer">
+      <a href="" target="_top">back to top</a>
+      | <a href="http://rubyforge.org/projects/ambition/">rubyforge</a>
+      | <a href="http://groups.google.com/group/ambition-rb/">the list</a>
+    </div>
+  </div>
+</body>
+</html>

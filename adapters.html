@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Ruby's Ambition</title>
+  <link href="/static/hubris.css" media="screen" rel="Stylesheet" type="text/css" />
+  <script src="/static/code_highlighter.js" type="text/javascript"></script>
+  <script src="/static/ruby.js" type="text/javascript"></script>  
+</head>
+
+<body>
+  <div id="main">
+    <div id="header">
+      <h1><span class="a">A</span>mbition</h1>
+      <div id="nav">
+        <a href="/"><span class="a">o</span>verview</a>
+        &#183; <a href="/adapters.html"><span class="a">a</span>dapters</a>
+        &#183; <a href="/api.html"><span class="a">a</span>pi</a>
+      </div>
+    </div>
+
+    <div id="body">
+      <h2>The Adapters</h2>
+
+
+	<p>Adapters are gems named <code>ambitious-something</code>, where <em>something</em> corresponds to the data
+store they are adapting.  They can be required in code via <code>ambition/adapters/something</code>.</p>
+
+
+	<p>To install and test the ActiveRecord adapter:</p>
+
+
+<pre>
+$ gem install ambitious-activerecord
+$ irb 
+&gt;&gt; require 'rubygems'
+&gt;&gt; require 'ambition/adapters/active_record'
+</pre>
+
+	<p>Adapters typically inject themselves into their target automatically, so that should be
+all you need.</p>
+
+
+	<p>There are a few adapters in development or released currently:</p>
+
+
+	<ul>
+	<li><a href="adapters/activerecord.html">ActiveRecord</a></li>
+		<li>ActiveLDAP</li>
+		<li>Facebook</li>
+		<li>XPath</li>
+		<li>CouchDB</li>
+		<li>DataMapper</li>
+	</ul>
+
+
+	<p>If you&#8217;re interested in writing your own adapter, read on.</p>
+
+
+	<h2>The Anatomy of an Adapter</h2>
+
+
+	<p>Ambition adapters consist of two parts: <strong>Translators</strong> and the <strong>Query</strong>.  Translators
+are used to translate plane jane Ruby into strings while the Query is used to build
+and execute a query from those strings.</p>
+
+
+	<p>The three translators are <code>Select</code>, <code>Slice</code>, and <code>Sort</code>.  Their names correspond to the
+<span class="caps">API</span> method they represent. Each translator consists of methods which convert passed 
+arguments into a string.</p>
+
+
+	<p>Here&#8217;s how the ActiveRecord adapter maps translator classes to <span class="caps">SQL</span> clauses:</p>
+
+
+	<ul>
+	<li><code>Select</code> =&gt; <code>WHERE</code></li>
+		<li><code>Slice</code> =&gt; <code>LIMIT</code> and <code>OFFSET</code></li>
+		<li><code>Sort</code> =&gt; <code>ORDER BY</code></li>
+	</ul>
+
+
+	<p>Your translators and the Query have three special methods available at all times:</p>
+
+
+	<ul>
+	<li><code>owner</code></li>
+		<li><code>clauses</code></li>
+		<li><code>stash</code></li>
+	</ul>
+
+
+	<p><code>owner</code> is the class from which the request was generated.</p>
+
+
+<pre class="ruby">
+User.select { |u| u.name == 'Pork' }
+# =&gt; owner == User
+</pre>
+
+	<p><code>clauses</code> is the hash of translated string arrays, keyed by processors.</p>
+
+
+<pre class="ruby">
+User.select { |u| u.name == 'Pork' }
+# =&gt; clauses ==  { :select =&gt; [ "users.name = 'Pork'" ] }
+</pre>
+
+	<p><code>stash</code> is your personal private stash.  A hash you can use for
+keeping stuff around.  Translators are free to set things which 
+can later be picked up by the Query class.</p>
+
+
+	<p>For instance, the <code>ActiveRecord</code> adapter&#8217;s <code>Select</code> translator adds to the
+<code>stash[:include]</code> array whenever it thinks it needs to do a join.  The
+Query class picks this up and adds it to the hash it feeds
+<code>find(:all)</code>.</p>
+
+
+<pre class="ruby">
+User.select { |u| u.profile.name == 'Pork' }
+# =&gt; stash == { :include =&gt; [ :profile ] }
+</pre>
+
+	<p><code>stash</code> is basically a way for your translators to talk to each other and, 
+more importantly, to the Query.</p>
+
+
+	<p>The Query is what kicks off the actual data store query, after all the translators have done
+their business.  Its <code>clauses</code> and <code>stash</code> hashes are as full as they will ever be.</p>
+
+
+	<p>The kicking is done by one of two methods:</p>
+
+
+	<ul>
+	<li><code>kick</code> </li>
+		<li><code>count</code></li>
+	</ul>
+
+
+	<p>While two other methods are generally expected to turn the <code>clauses</code> hash into something
+semantically valid:</p>
+
+
+	<ul>
+	<li><code>to_s</code></li>
+		<li><code>to_hash</code></li>
+	</ul>
+
+
+	<p>So, for instance, <code>Query#kick</code> may look like this:</p>
+
+
+<pre class="ruby">
+def kick
+  owner.find(:all, to_hash)
+end
+</pre>
+
+	<p>A straightforward translator/query <span class="caps">API</span> reference can be found on the <a href="api.html">api</a> page.</p>
+
+
+	<p>The easiest way to understand translators is to check out the source of the existing adapters
+or by using the adapter generator.</p>
+
+
+	<h2>The Adapter Generator</h2>
+
+
+	<p>Ambition ships with an <code>ambition_adapter</code> script which can generate an adapter skeleton.  Built 
+using Dr Nic&#8217;s <a href="http://rubigen.rubyforge.org/">Rubigen</a>, it spits out all the files, tests, and 
+Rakefiles your adapter needs.</p>
+
+
+	<p>Run it:</p>
+
+
+<pre>
+$ ambition_adapter flickr
+      create  
+      create  lib/ambition/adapters/flickr
+      create  test
+      create  lib/ambition/adapters/flickr/base.rb
+      create  lib/ambition/adapters/flickr/query.rb
+      create  lib/ambition/adapters/flickr/select.rb
+      create  lib/ambition/adapters/flickr/slice.rb
+      create  lib/ambition/adapters/flickr/sort.rb
+      create  lib/ambition/adapters/flickr.rb
+      create  test/helper.rb
+      create  test/select_test.rb
+      create  test/slice_test.rb
+      create  test/sort_test.rb
+      create  README
+      create  Rakefile
+</pre>
+
+	<p>Presto, you&#8217;ve got a ready and willing adapter skeleton in place now.  Check out the comments
+and you&#8217;re on your way.</p>
+
+
+	<h2>The Flow: Ambition + Adapters</h2>
+
+
+	<p>Let us examine the flow of a typical call, using the <code>ActiveRecord</code> adapter for reference.</p>
+
+
+	<p>The call:</p>
+
+
+<pre class="ruby">
+User.select { |u| u.name == 'Chris' &#38;&#38; u.age == 22 }.to_s
+</pre>
+
+	<p>The first few steps:</p>
+
+
+	<ul>
+	<li><code>Ambition::API#select</code> is called.</li>
+		<li>An <code>Ambition::Context</code> is created.</li>
+		<li>An <code>Ambition::Processors::Select</code> is created and added to the context.</li>
+		<li>The context calls <code>to_s</code> on the new <code>Select</code> processor</li>
+		<li>The block passed to <code>select</code> is processed.</li>
+	</ul>
+
+
+	<p>This processing is the real meat.  Ambition will instantiate your <code>Select</code> translator and 
+pass values to it, saving the return value of these method calls.
+returning <code>"(users.name = 'Chris' AND users.age = 22)"</code></p>
+
+
+	<ul>
+	<li><code>Ambition::Adapters::ActiveRecord::Select</code> is instantiated.</li>
+		<li>The translator&#8217;s <code>call</code> method is passed <code>:name</code>, returning <code>"users.name"</code></li>
+		<li>The translator&#8217;s <code>==</code> method is passed <code>"users.name"</code> and <code>"Chris"</code>, returning <code>"users.name = 'Chris'"</code></li>
+		<li><code>call</code> is passed <code>:age</code>, returning <code>"users.age"</code></li>
+		<li><code>==</code> is passed <code>"users.age"</code> and <code>22</code>, returning <code>"users.age = 22"</code></li>
+		<li>The translator&#8217;s <code>both</code> method is passed <code>"users.name = 'Chris'"</code> and <code>"users.age = 22"</code>,</li>
+	</ul>
+
+
+	<p>At this point we leave adapter-land.  The final string is stored in the <code>clauses</code> hash 
+(available to your <code>Query</code>) by the context.  The <code>clauses</code> hash is keyed by the translator 
+name&#8212;in this case, <code>:select</code>.</p>
+
+
+	<ul>
+	<li>The context is returned by <code>Ambition::API#select</code>.</li>
+		<li><code>to_s</code> is called on the context</li>
+		<li>The context forwards this <code>to_s</code> call to an instance of the adapter&#8217;s <code>Query</code> class</li>
+		<li>The ActiveRecord adapter&#8217;s <code>to_s</code> calls <code>to_hash</code></li>
+		<li><code>to_hash</code> uses the <code>clauses</code> hash to build an AR hash</li>
+		<li><code>to_s</code> then uses the hash&#8217;s members to build a <span class="caps">SQL</span> string</li>
+	</ul>
+
+
+	<p>The final string is then returned:</p>
+
+
+<pre class="ruby">
+"SELECT * FROM users WHERE (users.name = 'Chris' AND users.age = 22)" 
+</pre>
+
+	<p>And that&#8217;s all there is to it.  Except, of course, for the <a href="api.html">api</a> page.</p>
+    </div>
+
+    <div id="footer">
+      <a href="" target="_top">back to top</a>
+      | <a href="http://rubyforge.org/projects/ambition/">rubyforge</a>
+      | <a href="http://groups.google.com/group/ambition-rb/">the list</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,9 +1,0 @@
-%w( rubygems test/spec mocha English ).each { |f| require f }
-
-begin
-  require 'redgreen'
-rescue LoadError
-end
-
-$LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
-require 'ambition/adapters/<%= adapter_name %>'

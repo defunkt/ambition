@@ -22,7 +22,35 @@
     </div>
 
     <div id="body">
-      %CONTENT%
+      <p>Adapters are gems named <code>ambitious-something</code>, where <em>something</em> corresponds to the data
+store they are adapting.  They can be required in code via <code>ambition/adapters/something</code>.</p>
+
+
+	<p>To install and test the ActiveRecord adapter:</p>
+
+
+<pre>
+$ gem install ambitious-activerecord
+$ irb 
+&gt;&gt; require 'rubygems'
+&gt;&gt; require 'ambition/adapters/active_record'
+</pre>
+
+	<p>Adapters typically inject themselves into their target automatically, so that should be
+all you need.</p>
+
+
+	<p>There are a few adapters in development or released currently:</p>
+
+
+	<ul>
+	<li><a href="adapters/activerecord.html">ActiveRecord</a></li>
+		<li>ActiveLDAP</li>
+		<li>Facebook</li>
+		<li>XPath</li>
+		<li>CouchDB</li>
+		<li>DataMapper</li>
+	</ul>
     </div>
 
     <div id="footer">
