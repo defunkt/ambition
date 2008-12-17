@@ -4,7 +4,7 @@
 }
 
 body {
-  background: url(/static/bg.png) repeat;
+  background: url(http://defunkt.github.com/ambition/static/bg.png) repeat;
   color: #333;
   font-family: serif;
 }
