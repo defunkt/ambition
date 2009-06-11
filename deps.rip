@@ -1,0 +1,3 @@
+git://github.com/drnic/rubigen.git REL-1.3.0
+git://github.com/seattlerb/ruby2ruby.git e3cf57559 # 1.1.8
+git://github.com/seattlerb/parsetree.git 480ede9d9 # 2.1.1
